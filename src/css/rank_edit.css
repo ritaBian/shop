@@ -1,0 +1,113 @@
+html,body,#app{
+  background-color: #F8F8F8;
+}
+
+.page_body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 9rem;
+}
+.body /deep/ .van-nav-bar .van-icon{
+  color: #0A0A0A !important;
+}
+.body /deep/ .van-nav-bar__arrow{
+  font-size:1.09rem;
+  font-weight: bold;
+}
+.body /deep/ .van-nav-bar__title{
+  color: #585858;
+  font-size: 1.06rem;
+}
+.page_once{
+  width: 100%;
+}
+.page_once_no{
+  width: 100%;
+  padding: 0.28rem 0.75rem;
+  box-sizing: border-box;
+  font-size: 0.56rem;
+  color: #CCCCCC;
+}
+.page_white{
+  width: 100%;
+  height: 2.81rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  color: #303030;
+  padding: 0 0.72rem;
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+}
+.page_white_left{
+  width: 67%;
+  display: flex;
+  align-items: center;
+  word-break:keep-all;
+
+}
+.page_white_content{
+  margin-left: 0.55rem;
+  color: #000000;
+ }
+ .page_white_right{
+  display: flex;
+  align-items: center;
+ }
+ .page_white_right_once{
+   width: 2.66rem;
+   height: 1.06rem;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 0.69rem;
+   color: #999999;
+   border-radius: 10rem;
+   border: 0.06rem solid #DFDFDF;
+ }
+ .page_white_icon_top{
+   width: 0;
+   height: 0;
+   border-left: 0.15rem solid transparent;
+   border-right: 0.15rem solid transparent;
+   border-bottom: 0.25rem solid #444444;
+ }
+ .page_white_icon_bottom{
+   width: 0;
+   height: 0;
+   border-left: 0.15rem solid transparent;
+   border-right: 0.15rem solid transparent;
+   border-top: 0.25rem solid #CCCCCC;
+   margin-top: 0.06rem;
+ }
+ .page_white_icon_top2{
+   width: 0;
+   height: 0;
+   border-left: 0.15rem solid transparent;
+   border-right: 0.15rem solid transparent;
+   border-bottom: 0.25rem solid #CCCCCC;
+ }
+ .page_white_icon_bottom2{
+   width: 0;
+   height: 0;
+   border-left: 0.15rem solid transparent;
+   border-right: 0.15rem solid transparent;
+   border-top: 0.25rem solid #444444;
+   margin-top: 0.06rem;
+ }
+.submitButton{
+  width: 100%;
+  height: 2.81rem;
+  background-color: #01A862;
+  font-size: 0.94rem;
+  color: #FFFFFF;
+  letter-spacing: .6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}

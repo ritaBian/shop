@@ -1,0 +1,66 @@
+html,body,#app{
+  background-color: #F8F8F8;
+}
+.body{
+  background-color: #F8F8F8;
+}
+.page_city{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0.8rem;
+  /* padding-bottom: 9rem; */
+  box-sizing: border-box;
+  padding-top: 1.1rem;
+}
+.body /deep/ .van-nav-bar .van-icon{
+  color: #0A0A0A !important;
+}
+.body /deep/ .van-nav-bar__arrow{
+  font-size:1.09rem;
+  font-weight: bold;
+}
+.body /deep/ .van-nav-bar__title{
+  color: #585858;
+  font-size: 1.06rem;
+}
+.page_title{
+  width: 100%;
+  font-size: 0.75rem;
+  color: #999999;
+  margin-top: 0.5rem;
+}
+.page_content_border{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.86rem;
+  margin-top: 0.6rem;
+}
+.page_content{
+  width: 5.5rem;
+  padding: 0.39rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.2rem;
+  margin-right: 0.7rem;
+  margin-bottom: 0.7rem;
+  background-color: #FFFFFF;
+}
+.page_content_select{
+  color: #60A0F0;
+  border: 0.06rem solid #60A0F0;
+}
+.page_content_no_select{
+  color: #808080;
+  border: 0.06rem solid #DBDBDB;
+}
+
+.indexList_border{
+  width: 100%;
+}
+.indexList_group{
+  background-color: #FFFFFF;
+}

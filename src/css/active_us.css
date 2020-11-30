@@ -1,0 +1,45 @@
+html,body,#app{
+  background-color: #F8F8F8;
+}
+
+.page_body{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 9rem;
+}
+.body /deep/ .van-nav-bar .van-icon{
+  color: #0A0A0A !important;
+}
+.body /deep/ .van-nav-bar__arrow{
+  font-size:1.09rem;
+  font-weight: bold;
+}
+.body /deep/ .van-nav-bar__title{
+  color: #585858;
+  font-size: 1.06rem;
+}
+.page_once{
+  width: 93%;
+  height: auto;
+  background-color: #FFFFFF;
+  border-radius: 0.6rem;
+  box-shadow: 0 0 0.6rem 0.3rem rgba(0,0,0,.08);
+  margin: 1rem 0;
+  padding: 1rem 0.8rem;
+  box-sizing: border-box;
+  color: #333333;
+}
+.page_once_title{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.6rem;
+}
+.page_once_mess{
+  font-size: 1rem;
+  letter-spacing: 0.06rem;
+}

@@ -1,0 +1,130 @@
+html,body,#app{
+  background-color: #F8F8F8;
+}
+
+.page_body{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 9rem;
+}
+.body /deep/ .van-nav-bar .van-icon{
+  color: #0A0A0A !important;
+}
+.body /deep/ .van-nav-bar__arrow{
+  font-size:1.09rem;
+  font-weight: bold;
+}
+.body /deep/ .van-nav-bar__title{
+  color: #585858;
+  font-size: 1.06rem;
+}
+.page_title{
+  width: 100%;
+  padding: 0 0.75rem;
+  box-sizing: border-box;
+  margin-top: 1.09rem;
+  font-size: 1.06rem;
+  color: #585858;
+  line-height:1.5rem;
+}
+.white_border{
+  width: 100%;
+  background-color: #FFFFFF;
+  margin-top: 0.72rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 1rem;
+}
+.white_once{
+  width: 100%;
+  padding: 0 0.75rem;
+  box-sizing: border-box;
+  font-size: 0.69rem;
+}
+.white_once_title{
+  width: 100%;
+  font-size: 1.06rem;
+  color: #303030;
+  margin-top: 0.88rem;
+  margin-bottom: 0.76rem;
+}
+.white_once_view{
+  width: 100%;
+  background-color: #F8F8F8;
+  border-radius: 0.6rem;
+  margin-top: 0.88rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.white_view_for{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.03rem 0.97rem;
+  padding-right: 0.72rem;
+  box-sizing: border-box;
+  border-bottom: 0.06rem solid #ECEDF1;
+}
+.white_view_left{
+
+}
+.white_view_left_title{
+  font-size: 0.94rem;
+  color: #303030;
+}
+.white_view_left_green{
+  color: #00AF66;
+  margin-top: 0.6rem;
+}
+.white_view_left_yellow{
+  margin-top: 0.6rem;
+  color: #ED8B37;
+}
+.white_view_left_black{
+  color: #303030;
+  margin-left: 0.56rem;
+}
+.white_view_left_bottom{
+  color: #909090;
+  margin-top: 0.55rem;
+}
+.white_view_right{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.white_view_right_title{
+  color: #999999;
+  font-size: 0.75rem;
+  text-decoration:line-through;
+  margin-top: 0.6rem;
+}
+.white_view_right_money{
+  color: #FF6600;
+  font-size: 0.63rem;
+  letter-spacing: 0.05rem;
+  margin-top: 0.1rem;
+}
+.white_view_right_money2{
+  font-size: 1.13rem;
+}
+.white_view_right_qi{
+  font-size: 0.69rem;
+  color: #666666;
+}
+.white_view_right_button{
+  width: 4.06rem;
+  height: 1.72rem;
+  background-color: #00AF66;
+  border-radius: 0.3rem;
+  font-size: 0.81rem;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.4rem;
+}
