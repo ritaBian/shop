@@ -14,7 +14,7 @@
       <div class="item">
         <div class="title">
           <div class="left">
-            <van-checkbox name="1" @click="checkAll" v-model="isAll"
+            <van-checkbox name="1" icon-size="18px" @click="checkAll" v-model="isAll"
               >商城自营仓</van-checkbox
             >
           </div>
@@ -24,6 +24,7 @@
           v-model="result"
           ref="checkboxGroup"
           @change="change"
+          icon-size="18px"
         >
           <div v-for="(k, index) in carList" :key="index">
             <van-swipe-cell
@@ -39,13 +40,12 @@
                   <div class="desc">
                     <div class="title2">{{ k.title }}</div>
                     <div class="add">
-                      <div class="price">￥{{ k.type.PRICE * k.count }}</div>
-                      <van-stepper v-model="value" />
+                      <div class="price">￥{{ (k.type.PRICE * k.count).toFixed(2) }}</div>
+                      <van-stepper v-model="k.count" />
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- <van-cell :border="false" title="单元格" value="内容" /> -->
               <template #right>
                 <van-button
                   @click="cut(index)"
@@ -118,16 +118,16 @@
     <div class="nonew">已经到底了</div>
 
     <div class="footer">
-      <van-checkbox v-model="checked">全选</van-checkbox>
+      <van-checkbox v-model="checked" icon-size="18px" @click="checkAll2">全选</van-checkbox>
       <section>
         <div class="total">
           <div class="price">
             总计:
-            <span>￥568.00</span>
+            <span>￥{{ allpay }}</span>
           </div>
           <div class="sale">商品再购<span>63.00</span>元享包邮</div>
         </div>
-        <div class="buy" @click="$router.push('/shop/buy')">结算(5)</div>
+        <div class="buy" @click="$router.push('/shop/buy')">结算({{selectCount}})</div>
       </section>
     </div>
     <!-- 底部栏 -->
@@ -137,6 +137,7 @@
 <script>
 import "@/css/shop/car.scss";
 import Footer2 from "@/common/travel/_footer2.vue";
+import Util from '../../util/common'
 export default {
   components: {
     "v-footer2": Footer2,
@@ -157,6 +158,26 @@ export default {
     count() {
       return this.$store.state.detail.count;
     },
+    selectCount(){
+      return this.$store.getters.selectedList.length;
+    },
+    //勾选的商品的价格总和
+    allpay(){
+      let all = 0;
+      // 如果有勾选商品,计算总价格
+      if(this.$store.getters.selectedList) {
+
+        for (let i = 0; i < this.$store.getters.selectedList.length; i++) {
+          let tmp=this.$store.getters.selectedList[i];
+          console.log(tmp.type.PRICE,tmp.count,tmp.promotion_price)
+          all += Util.Jia(Util.Cheng(tmp.type.PRICE,tmp.count),tmp.promotion_price);
+        }
+
+      }
+      // 没有勾选 即为0
+      return all.toFixed(2);
+
+    },
   },
   created() {
     // 初始化先获取购物车商品列表 否则 页面刷新出Bug
@@ -164,29 +185,48 @@ export default {
       this.$store.commit("RESET_CARLIST");
     }
   },
+  mounted(){
+    this.carList.forEach((item,index) =>{
+      if(item.choseBool) this.result.push(index)
+    })
+  },
+  beforeMount() {
+     this.SetPromotion();
+  },
   methods: {
     checkAll() {
-      if (this.result.length < 3) {
+      if (this.result.length < this.carList.length) {
         this.$refs.checkboxGroup.toggleAll(true);
       } else {
         this.$refs.checkboxGroup.toggleAll(false);
       }
     },
-    change(val) {
-      if (val.length >= 3) {
-        this.isAll = true;
-      }
-      if (this.isAll && val.length < 3) {
-        this.isAll = false;
-      }
+    checkAll2(val){
+      this.isAll = this.checked
+      this.checkAll()
     },
-    sjpw(e) {
-      console.log(e);
+    change(val) {
+      if (val.length >= this.carList.length) {
+        this.isAll = true;
+        this.checked = true
+      }
+      if (this.isAll && val.length < this.carList.length) {
+        this.isAll = false;
+        this.checked = false
+      }
+      
+      this.carList.forEach((element,index) => {
+        let flag = val.some(item => { return item == index})
+        if(!flag) element.choseBool = false
+        else element.choseBool = true
+      });
+      this.toggle()
     },
     get(index) {
       this.$refs["swipeCell" + index][0].open();
       console.log("66666");
     },
+    // 删除
     cut(i) {
       this.$dialog.alert({
         title: "提示",
@@ -210,6 +250,7 @@ export default {
         this.$toast('已取消');
       })
     },
+    // 删除前回调
     beforeClose2({ position, instance }) {
       switch (position) {
         case "left":
@@ -227,6 +268,40 @@ export default {
           break;
       }
     },
+    // 价格
+    SetPromotion(){
+        if (this.$store.state.detail.carList != "" && this.$store.state.detail.carList.length>0)
+        {
+            for (let k = 0; k < this.$store.state.detail.carList.length; k++)
+            {
+                this.$store.state.detail.carList[k]['promotion_id']=0;
+                this.$store.state.detail.carList[k]['promotion_price']=0;
+                let LastPrice=0;
+                for (let o = 0; o < this.$store.state.detail.carList[k].promotion.length; o++)
+                {
+                    if(Util.Cheng(this.$store.state.detail.carList[k]['price'],this.$store.state.detail.carList[k]['count'])>=Number(this.$store.state.detail.carList[k].promotion[o]['V2']))
+                    {
+                        if(Math.abs(this.$store.state.detail.carList[k].promotion[o]['V'])>LastPrice)
+                        {
+                            LastPrice=Math.abs(this.$store.state.detail.carList[k].promotion[o]['V']);
+                            this.$store.state.detail.carList[k]['promotion_id']=this.$store.state.detail.carList[k].promotion[o]['ID'];
+                            this.$store.state.detail.carList[k]['promotion_price']=Number(this.$store.state.detail.carList[k].promotion[o]['V']);
+                        }
+                    }
+
+                }
+                this.$set(this.$store.state.detail.carList,k,this.$store.state.detail.carList[k]);
+                //console.log(this.$store.state.detail.carList[k]);
+            }
+        }
+    },
+    // 商品取消选中
+    toggle() {
+      setTimeout(() => {
+          // 每点击一下都会改变choseBool的布尔值,所以要重置数组
+          this.$store.dispatch('cutCarList',this.carList)
+      }, 0);
+    }
   },
 };
 </script>

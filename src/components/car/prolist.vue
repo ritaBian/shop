@@ -135,7 +135,6 @@ export default {
 
     },
     toggle() {
-
       setTimeout(() => {
           // 每点击一下都会改变choseBool的布尔值,所以要重置数组
           this.$store.dispatch('cutCarList',this.carList)

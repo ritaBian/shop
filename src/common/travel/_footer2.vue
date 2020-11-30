@@ -22,18 +22,7 @@
 
       </template>
     </van-tabbar-item> -->
-  <!-- <van-tabbar-item class="tabbar-item-active" to="/category/all">
-      <div class="tabbar-active-border ">
-        <div class="item_active">
-        </div>
-        <div class="item_active2">
-        </div>
-        <div class="tabbar-active">
-          <div>商品</div>
-        </div>
-      </div>
-  </van-tabbar-item> -->
-  <van-tabbar-item class="tabbar-item-active" to="/shopCar">
+  <van-tabbar-item class="tabbar-item-active" to="/category/all">
       <div class="tabbar-active-border ">
         <div class="item_active">
         </div>
@@ -44,6 +33,17 @@
         </div>
       </div>
   </van-tabbar-item>
+  <!-- <van-tabbar-item class="tabbar-item-active" to="/shopCar">
+      <div class="tabbar-active-border ">
+        <div class="item_active">
+        </div>
+        <div class="item_active2">
+        </div>
+        <div class="tabbar-active">
+          <div>商品</div>
+        </div>
+      </div>
+  </van-tabbar-item> -->
     <!-- <van-tabbar-item class="tabbar-item2 tabbar-radius2" icon="contact" to="/user">
       <span>我的</span>
       <template #icon="props">
