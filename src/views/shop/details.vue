@@ -175,33 +175,7 @@
     </div>
     
     <!-- 购买 -->
-    <van-action-sheet v-model="show" title="商品选择" :round="false">
-      <div class="buy_content">
-        <div class="pro">
-          <img src="@/assets/shop/details/img1.png" alt="">
-          <div class="desc">
-            <div class="title">全麦无糖粗粮馒头王哥庄铁锅大馒头手工馒头山东青岛崂山特产老面</div>
-            <div class="price">￥698</div>
-          </div>
-        </div>
-        <div class="style">
-          <div class="title">选择口味</div>
-          <ul>
-            <li>全麦(4两)</li>
-            <li class="choice">6+饽花2斤全麦(4两)</li>
-            <li class="other">6全麦(4两)6+年糕3块</li>
-          </ul>
-        </div>
-        <div class="num">
-          <div class="title">选择数量</div>
-          <van-stepper v-model="value" />
-        </div>
-        <div class="footers">
-          <p>加入购物车</p>
-          <p>立即购买</p>
-        </div>
-      </div>
-    </van-action-sheet>
+    
   </div>
 </template>
 <script>

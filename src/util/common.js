@@ -329,7 +329,7 @@ IntoCarGlobal(vm,onlyChangePrice=false){
     vm.$store.state.detail2.proData.PRO.POINT=typeId['POINT'];
     return;
   }
-
+console.log(vm.$store.state.detail2.proData)
  const product = [{
    title:vm.$store.state.detail2.proData.PRO.NAME,
    price:vm.$store.state.detail2.proData.PRO.PRICE,
@@ -352,7 +352,6 @@ IntoCarGlobal(vm,onlyChangePrice=false){
   }
   else
   {
-    //console.log(product);
      vm.$store.dispatch('addCarList',product);
      vm.$store.dispatch('setLocalCount',true);
      //vm.$forceUpdate();

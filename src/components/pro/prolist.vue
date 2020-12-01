@@ -64,7 +64,6 @@ import Baseline from '@/common/_baseline.vue'
       AddIntoCart:function(proid,pro)
       {
         this.$store.commit('SET_DATAS2',pro);
-
         if(pro.DETAIL.GUIGE.hasOwnProperty("GUI_GE_1"))
         {
           this.$store.state.detail2.ShowSelectType=true;

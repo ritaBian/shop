@@ -47,9 +47,9 @@ import Footer2 from '../common/travel/_footer2.vue'
     data() {
       return {
         list: [],
-      loading: false,
-      finished: false,
-      pageNum:0
+        loading: false,
+        finished: false,
+        pageNum:0
       };
     },
 created(){

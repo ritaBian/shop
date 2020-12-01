@@ -53,14 +53,14 @@
   <van-tabbar-item class="tabbar-item2 tabbar-radius2" icon="contact" to="/shop/mine">
     <span>我的</span>
     <template #icon="props">
-      <img :src="props.active ? require('../../../static/icon/wode2.png') : require('../../../static/icon/wode.png')" />
+      <!-- <img :src="props.active ? require('../../../static/icon/wode2.png') : require('../../../static/icon/wode.png')" /> -->
     </template>
   </van-tabbar-item>
 
 
 
   </van-tabbar>
-  <van-popup v-model="$store.state.detail2.ShowSelectType" v-if="$store.state.detail2.proData.PRO" z-index="10" custom-style="height:80vh,width:100%" position="bottom">
+  <!-- <van-popup v-model="$store.state.detail2.ShowSelectType" v-if="$store.state.detail2.proData.PRO" z-index="10" custom-style="height:80vh,width:100%" position="bottom">
       请选择规格<span v-if="$store.state.detail2.proData.PRO.PRICE">,价格:{{$store.state.detail2.proData.PRO.PRICE}}</span>
       <div class="chose-mychosed" ontouchstart="">
         <template lang="html" v-for="(v,j) in guige">
@@ -78,7 +78,41 @@
           <div class="footer-addcar" style="color:#fff" @click="AddToCard" >加入购物车</div>
         </div>
     </div>
-  </van-popup>
+  </van-popup> -->
+  <div class="shopDetais">
+    <van-popup v-model="$store.state.detail2.ShowSelectType" v-if="$store.state.detail2.proData.PRO" z-index="10" custom-style="height:80vh,width:100%" position="bottom">
+      <!-- <van-action-sheet v-model="show" title="商品选择" :round="false"> -->
+        <div class="buy_content" v-for="(v,j) in guige">
+          <div class="pro">
+            <img src="@/assets/shop/details/img1.png" alt="">
+            <div class="desc">
+              <div class="title">{{$store.state.detail2.proData.PRO.NAME}}</div>
+              <div class="price">￥{{$store.state.detail2.proData.PRO.PRICE}}</div>
+            </div>
+          </div>
+          <div class="style">
+            <div class="title">选择{{v.NAME}}</div>
+            <ul>
+              <li v-for="(k,i) in v.SUB" 
+                :class="{'choice':$isEmpty(selectType,v.ID+'',0)==k.ID}" 
+                @click="changeType(v.ID,k.ID)"
+                >{{k.NAME}}</li>
+              <!-- <li class="choice">6+饽花2斤全麦(4两)</li>
+              <li class="other">6全麦(4两)6+年糕3块</li> -->
+            </ul>
+          </div>
+          <div class="num">
+            <div class="title">选择数量</div>
+            <van-stepper v-model="value" />
+          </div>
+          <div class="footers">
+            <p @click="AddToCard">加入购物车</p>
+            <p>立即购买</p>
+          </div>
+        </div>
+      <!-- </van-action-sheet> -->
+    </van-popup>
+  </div>
   </div>
 </template>
 
@@ -87,8 +121,9 @@ import { Tabbar, TabbarItem,Toast,Popup} from 'vant';
 import {mapState} from 'vuex'
 import Util from '../../util/common'
 import 'vant/lib/index.css';
+import "@/css/shop/details.scss";
 
-  export default {
+export default {
   computed: mapState({
     view: state => state.detail2.proData.PRO,
     yunfei: state => state.detail2.proData.YUN_FEI,
@@ -133,6 +168,7 @@ import 'vant/lib/index.css';
         active: -1,
         isNewChat:'',
         carCount:'',
+        value:'',
       }
     },
 watch:{
