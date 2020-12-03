@@ -52,7 +52,6 @@ import {
   mapState
 } from 'vuex'
 
-
 export default {
   //属性
   props: {

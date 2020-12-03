@@ -5,7 +5,12 @@
 <template>
   <div class="shopCar">
     <div class="top">
-      <img src="@/assets/shop/back.png" alt="" class="back" @click="$router.go(-1)"/>
+      <img
+        src="@/assets/shop/back.png"
+        alt=""
+        class="back"
+        @click="$router.go(-1)"
+      />
       <div class="top_input">
         <img src="@/assets/shop/search.png" alt="" class="img" />
         <input
@@ -29,15 +34,15 @@
     </div>
     <div class="bar">
       <div class="left">
-        <van-sidebar v-model="activeKey">
-          <van-sidebar-item title="@伴手礼" />
-          <van-sidebar-item title="乡浓土产" />
+        <van-sidebar v-model="activeKey" @change="sideChange">
+          <van-sidebar-item v-for="(item,index) in allData[0].list" :key="index" :title="item.NAME"  />
+          <!-- <van-sidebar-item title="乡浓土产" />
           <van-sidebar-item title="干鲜水产" />
           <van-sidebar-item title="畜牧家禽" />
           <van-sidebar-item title="饮品调味" />
           <van-sidebar-item title="健康保健" />
           <van-sidebar-item title="工匠手艺" />
-          <van-sidebar-item title="旅游用品" />
+          <van-sidebar-item title="旅游用品" /> -->
         </van-sidebar>
       </div>
       <div class="right">
@@ -47,13 +52,13 @@
             <li
               :class="[
                 'cont_once',
-                optionValue.id == item.id ? 'option_once2' : 'option_once1',
+                Sortid == item.ID ? 'option_once2' : 'option_once1',
               ]"
               @click="onOptionClick(item)"
-              v-for="(item, index) of optionList"
+              v-for="(item, index) of allData[0].list[activeKey].list"
               :key="index"
             >
-              {{ item.name }}
+              {{ item.NAME }}
             </li>
           </ul>
         </div>
@@ -66,39 +71,88 @@
             v-model="loading"
             :finished="finished"
             finished-text="没有更多了"
+            @load="onLoad"
           >
-          <!-- @load="onLoad" -->
-            <div class="item" v-for="(item,index) in 6" :key="index" @click="$router.push('/shop/details')">
-              <img src="@/assets/shop/item.png" alt="" class="item-img">
+            <div
+              class="item"
+              v-for="(k, index) in list"
+              :key="index"
+              @click="$router.push({path:'/shop/details',query:{id:k.ID}})"
+            >
+              <img v-lazy="checkPic(k.PIC)" alt="" class="item-img" />
               <div class="pro">
-                <div class="title">全麦无糖粗粮馒头王哥庄铁锅大馒头手工馒头山东青全麦无糖粗粮馒头王哥庄铁锅大馒头手工馒头山东青</div>
+                <div class="title">{{ k.NAME }}</div>
                 <div class="price">
-                  <div class="new">￥108</div>
+                  <div class="new">￥{{ k.PRICE }}</div>
                   <div class="old">￥101</div>
                 </div>
-                <div class="change">
+                <!-- <div class="change">
                   <p>99选3</p>
                   <p>新品</p>
+                </div> -->
+                <div class="added">
+                  <div class="grade">96%好评</div>
+                  <section>
+                    <div
+                      class="left"
+                      v-if="$store.state.detail.carListIndex[k.ID.toString()]"
+                    >
+                      <img
+                        @click.self.stop="DelCart(k.ID, k)"
+                        style="
+                          width: 19px;
+                          height: 19px;
+                          vertical-align: middle;
+                          cursor: pointer;
+                        "
+                        src="static/sub_red_empty.png"
+                      />
+                      <div
+                        style="
+                          text-align: center;
+                          width: 20px;
+                          padding-left: 5px;
+                          padding-right: 5px;
+                        "
+                      >
+                        {{ $store.state.detail.carListIndex[k.ID.toString()] }}
+                      </div>
+                    </div>
+                    <img
+                      @click.self.stop="AddIntoCart(k.ID, k)"
+                      style="
+                        width: 19px;
+                        height: 19px;
+                        vertical-align: middle;
+                        cursor: pointer;
+                      "
+                      src="static/add_red.png"
+                    />
+                  </section>
                 </div>
-                <div class="grade">96%好评</div>
               </div>
             </div>
           </van-list>
         </div>
       </div>
     </div>
+    <!-- 底部栏 -->
+    <v-footer2></v-footer2>
   </div>
 </template>
 <script>
 import "@/css/shop/main.scss";
+import Footer2 from "@/common/travel/_footer2.vue";
+import Util from "../../util/common";
 export default {
+  components: {
+    "v-footer2": Footer2,
+  },
   data() {
     return {
       name: "",
       value1: "",
       value2: "",
-      loading: false,
-      finished:false,
       option1: [
         { text: "全部商品", value: 0 },
         { text: "新款商品", value: 1 },
@@ -123,7 +177,40 @@ export default {
         { id: 5, name: "鱼类" },
         { id: 6, name: "贝类" },
       ],
+      list: [],
+      loading: false,
+      finished: false,
+      pageNum: 0,
+      // 左边
+      allData:[],
+      Sortid: 0,
     };
+  },
+  created(){
+    this.getLeft()
+    this.activeKey = this.$store.state.category.tabIndex
+  },
+  watch: {
+    "$store.state.category.tabIndex"(val, old) {
+      if (val != old) {
+        this.$store.state.detail.lastpara =
+          this.allData[0].list[this.$store.state.category.tabIndex].ID || 0;
+        this.list = [];
+        this.pageNum = 0;
+        this.Sortid = 0;
+        this.finished = false;
+        this.$forceUpdate();
+        //this.onLoad();
+      }
+    },
+    Sortid(val, old) {
+      if (val != old) {
+        this.list = [];
+        this.pageNum = 0;
+        this.finished = false;
+        this.$forceUpdate();
+      }
+    },
   },
   methods: {
     onSubmit() {},
@@ -135,10 +222,98 @@ export default {
       } else {
         this.optionValue = item;
       }
+      this.Sortid = item.ID
       // this.optionValue = item
       // this.page_index = 1;
       // this.pageList = [];
       // this.onShows();
+    },
+    checkPic: function (picurl) {
+      return this.$conf.domain + "/" + picurl;
+    },
+    // 左边导航栏切换
+    sideChange(i){
+      this.$store.commit('CHANGE_TABINDEX',i)
+    },
+    // 获取左边滑动
+    getLeft() {
+      this.$dopost(
+        "/sysapi/pro/sort/",
+        null,
+        function (res) {
+          if (
+            res.data &&
+            typeof res.data.error != "undefined" &&
+            res.data.error === 0
+          ) {
+            this.allData = res.data.data;
+          } else {
+            Toast(res.data && res.data.mess ? res.data.mess : "接口错误");
+          }
+        }.bind(this)
+      );
+    },
+    onLoad() {
+      //this.loading=true;
+      this.$dopost(
+        "/sysapi/pro/list/",
+        {
+          get_detail: 1,
+          viewloading: 0,
+          page: this.pageNum + 1,
+          sort_id:
+            this.Sortid > 0
+              ? this.Sortid
+              : this.allData[0].list[this.$store.state.category.tabIndex].ID || 0,
+        },
+        function (res) {
+          if (
+            res.data &&
+            typeof res.data.error != "undefined" &&
+            res.data.error === 0
+          ) {
+            if (
+              this.$store.state.index.currentPage.page != window.location.href
+            ) {
+              this.$store.state.index.currentPage.name = "菜谱";
+              this.$store.state.index.currentPage.desc =
+                res.data.data.mallsort.NAME;
+              this.$store.state.index.currentPage.page = window.location.href;
+              this.$store.state.index.currentPage.image = Util.getNull(
+                res.data.data.PRO
+              )
+                ? this.$conf.domain + "/" + res.data.data.PRO[0].PIC
+                : "";
+            }
+
+            for (let i = 0; i < res.data.data.PRO.length; i++) {
+              this.list.push(res.data.data.PRO[i]);
+            }
+            this.pageNum = parseInt(res.data.data.page);
+            if (
+              parseInt(res.data.data.page) >= parseInt(res.data.data.allpage)
+            ) {
+              this.finished = true;
+            }
+            this.loading = false;
+          } else {
+            Toast(res.data && res.data.mess ? res.data.mess : "接口错误");
+          }
+        }.bind(this)
+      );
+    },
+    AddIntoCart: function (proid, pro) {
+      console.log(pro);
+      this.$store.commit("SET_DATAS2", pro);
+      if (pro.DETAIL.GUIGE.hasOwnProperty("GUI_GE_1")) {
+        this.$store.state.detail2.ShowSelectType = true;
+      } else {
+        Util.IntoCarGlobal(this);
+      }
+      //console.log(proid);console.log(detail);
+    },
+    DelCart: function (proid, pro) {
+      Util.SetCartItemCount(this, pro);
     },
   },
 };

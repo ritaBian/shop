@@ -6,7 +6,6 @@
     <v-baseline></v-baseline>
     <v-footer></v-footer>
     <!-- <v-footer2></v-footer2> -->
-    
   </div>
 </template>
 

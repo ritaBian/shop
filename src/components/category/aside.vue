@@ -4,7 +4,6 @@
       <li v-for="(k,i) in datas" @click='changeTabIndex(i)' >
         <router-link :to="{path:'/category/'+k.ID}" :class='{active:i==tabIndex}' >{{k.NAME}}</router-link>
       </li>
-
     </ul>
 
   </aside>

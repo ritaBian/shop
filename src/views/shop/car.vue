@@ -8,13 +8,18 @@
       title="购物车"
       left-text=""
       right-text="编辑"
+      @click-right="clearCar"
       @click-left="$router.go(-1)"
     />
     <div class="pro" v-if="count && carList">
       <div class="item">
         <div class="title">
           <div class="left">
-            <van-checkbox name="1" icon-size="18px" @click="checkAll" v-model="isAll"
+            <van-checkbox
+              name="1"
+              icon-size="18px"
+              @click="checkAll"
+              v-model="isAll"
               >商城自营仓</van-checkbox
             >
           </div>
@@ -40,8 +45,15 @@
                   <div class="desc">
                     <div class="title2">{{ k.title }}</div>
                     <div class="add">
-                      <div class="price">￥{{ (k.type.PRICE * k.count).toFixed(2) }}</div>
-                      <van-stepper v-model="k.count" />
+                      <div class="price">
+                        ￥{{ (k.type.PRICE * k.count).toFixed(2) }}
+                      </div>
+                      <van-stepper
+                        v-model="k.count"
+                        @change="stepChange(k)"
+                        @plus="plusChange(k)"
+                        @minus="minusChange(k)"
+                      />
                     </div>
                   </div>
                 </div>
@@ -118,7 +130,9 @@
     <div class="nonew">已经到底了</div>
 
     <div class="footer">
-      <van-checkbox v-model="checked" icon-size="18px" @click="checkAll2">全选</van-checkbox>
+      <van-checkbox v-model="checked" icon-size="18px" @click="checkAll2"
+        >全选</van-checkbox
+      >
       <section>
         <div class="total">
           <div class="price">
@@ -127,7 +141,9 @@
           </div>
           <div class="sale">商品再购<span>63.00</span>元享包邮</div>
         </div>
-        <div class="buy" @click="$router.push('/shop/buy')">结算({{selectCount}})</div>
+        <div class="buy" @click="goPay">
+          结算({{ selectCount }})
+        </div>
       </section>
     </div>
     <!-- 底部栏 -->
@@ -137,7 +153,7 @@
 <script>
 import "@/css/shop/car.scss";
 import Footer2 from "@/common/travel/_footer2.vue";
-import Util from '../../util/common'
+import Util from "../../util/common";
 export default {
   components: {
     "v-footer2": Footer2,
@@ -158,25 +174,25 @@ export default {
     count() {
       return this.$store.state.detail.count;
     },
-    selectCount(){
+    selectCount() {
       return this.$store.getters.selectedList.length;
     },
     //勾选的商品的价格总和
-    allpay(){
+    allpay() {
       let all = 0;
       // 如果有勾选商品,计算总价格
-      if(this.$store.getters.selectedList) {
-
+      if (this.$store.getters.selectedList) {
         for (let i = 0; i < this.$store.getters.selectedList.length; i++) {
-          let tmp=this.$store.getters.selectedList[i];
-          console.log(tmp.type.PRICE,tmp.count,tmp.promotion_price)
-          all += Util.Jia(Util.Cheng(tmp.type.PRICE,tmp.count),tmp.promotion_price);
+          let tmp = this.$store.getters.selectedList[i];
+          // console.log(tmp.type.PRICE, tmp.count, tmp.promotion_price);
+          all += Util.Jia(
+            Util.Cheng(tmp.type.PRICE, tmp.count),
+            tmp.promotion_price
+          );
         }
-
       }
       // 没有勾选 即为0
       return all.toFixed(2);
-
     },
   },
   created() {
@@ -185,13 +201,13 @@ export default {
       this.$store.commit("RESET_CARLIST");
     }
   },
-  mounted(){
-    this.carList.forEach((item,index) =>{
-      if(item.choseBool) this.result.push(index)
-    })
+  mounted() {
+    this.carList.forEach((item, index) => {
+      if (item.choseBool) this.result.push(index);
+    });
   },
   beforeMount() {
-     this.SetPromotion();
+    this.SetPromotion();
   },
   methods: {
     checkAll() {
@@ -201,26 +217,29 @@ export default {
         this.$refs.checkboxGroup.toggleAll(false);
       }
     },
-    checkAll2(val){
-      this.isAll = this.checked
-      this.checkAll()
+    checkAll2(val) {
+      this.isAll = this.checked;
+      this.checkAll();
     },
+    // 复选框变化
     change(val) {
       if (val.length >= this.carList.length) {
         this.isAll = true;
-        this.checked = true
+        this.checked = true;
       }
       if (this.isAll && val.length < this.carList.length) {
         this.isAll = false;
-        this.checked = false
+        this.checked = false;
       }
-      
-      this.carList.forEach((element,index) => {
-        let flag = val.some(item => { return item == index})
-        if(!flag) element.choseBool = false
-        else element.choseBool = true
+
+      this.carList.forEach((element, index) => {
+        let flag = val.some((item) => {
+          return item == index;
+        });
+        if (!flag) element.choseBool = false;
+        else element.choseBool = true;
       });
-      this.toggle()
+      this.toggle();
     },
     get(index) {
       this.$refs["swipeCell" + index][0].open();
@@ -228,27 +247,50 @@ export default {
     },
     // 删除
     cut(i) {
-      this.$dialog.alert({
-        title: "提示",
-        message: "是否要删除此商品？",
-        showCancelButton:true,
-        confirmButtonText:'确定',
-        cancelButtonText:'取消',
-      }).then(() => {
-        this.$refs["swipeCell" + i][0].open();
-        // 点击垃圾桶，删除当前商品，这里用splice和filter都会bug,只能重置数组
-        let newCarList = [];
-        for (let k = 0; k < this.carList.length; k++) {
-          if (k !== i) {
-            newCarList.push(this.carList[k]);
+      this.$dialog
+        .alert({
+          title: "提示",
+          message: "是否要删除此商品？",
+          showCancelButton: true,
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+        })
+        .then(() => {
+          this.$refs["swipeCell" + i][0].open();
+          // 点击垃圾桶，删除当前商品，这里用splice和filter都会bug,只能重置数组
+          let newCarList = [];
+          for (let k = 0; k < this.carList.length; k++) {
+            if (k !== i) {
+              newCarList.push(this.carList[k]);
+            }
           }
-        }
-        //点击垃圾桶 把商品数量count-1
-        this.$store.dispatch("cutCarList", newCarList);
-        this.$store.dispatch("setLocalCount", false);
-      }).catch(() =>{
-        this.$toast('已取消');
-      })
+          //点击垃圾桶 把商品数量count-1
+          this.$store.dispatch("cutCarList", newCarList);
+          this.$store.dispatch("setLocalCount", false);
+        })
+        .catch(() => {
+          this.$toast("已取消");
+        });
+    },
+    // 导航栏右侧
+    clearCar() {
+      this.$dialog
+        .confirm({
+          title: "",
+          message: "确定清空么？",
+        })
+        .then(() => {
+          Util.setLocal("", "carList");
+          this.$store.state.detail.carList = [];
+          this.$store.state.detail.count = 0;
+          this.$store.state.detail.selectedList = "";
+          this.$store.state.detail.unSelectedList = "";
+          this.$store.commit("RESET_CARLIST");
+          this.$forceUpdate();
+        })
+        .catch(() => {
+          // on cancel
+        });
     },
     // 删除前回调
     beforeClose2({ position, instance }) {
@@ -268,40 +310,98 @@ export default {
           break;
       }
     },
-    // 价格
-    SetPromotion(){
-        if (this.$store.state.detail.carList != "" && this.$store.state.detail.carList.length>0)
+    // 步进器变化
+    stepChange(product){
+      this.$store.commit('RESET_COUNT');
+      this.$store.dispatch('cutCarList',this.carList);
+    },
+    // 步进器+
+    plusChange(product) {
+      this.$store.commit('RESET_COUNT');
+      this.$store.dispatch('addCarList2',[product]);
+    },
+    // 步进器-
+    minusChange(product) {
+      product.ID = product.id
+      Util.SetCartItemCount(this,product);
+    },
+    //点击跳转到支付页
+    goPay(){
+        if(this.$store.state.login.token!=1)
         {
-            for (let k = 0; k < this.$store.state.detail.carList.length; k++)
-            {
-                this.$store.state.detail.carList[k]['promotion_id']=0;
-                this.$store.state.detail.carList[k]['promotion_price']=0;
-                let LastPrice=0;
-                for (let o = 0; o < this.$store.state.detail.carList[k].promotion.length; o++)
-                {
-                    if(Util.Cheng(this.$store.state.detail.carList[k]['price'],this.$store.state.detail.carList[k]['count'])>=Number(this.$store.state.detail.carList[k].promotion[o]['V2']))
-                    {
-                        if(Math.abs(this.$store.state.detail.carList[k].promotion[o]['V'])>LastPrice)
-                        {
-                            LastPrice=Math.abs(this.$store.state.detail.carList[k].promotion[o]['V']);
-                            this.$store.state.detail.carList[k]['promotion_id']=this.$store.state.detail.carList[k].promotion[o]['ID'];
-                            this.$store.state.detail.carList[k]['promotion_price']=Number(this.$store.state.detail.carList[k].promotion[o]['V']);
-                        }
-                    }
-
-                }
-                this.$set(this.$store.state.detail.carList,k,this.$store.state.detail.carList[k]);
-                //console.log(this.$store.state.detail.carList[k]);
-            }
+          this.$toast('请先登录会员！');
+          return;
+          //this.$router.push({path:'/login'})
         }
+        // 如果有选择商品才能跳转
+        if(this.$store.getters.selectedList.length) {
+          // 保存+缓存选择的商品 ,在支付页能用到
+          this.$store.dispatch('setSelectedList')
+          this.$router.push({path:'/shop/buy'})
+
+
+      } else {
+
+        alert('你还没选择商品')
+
+      }
+
+    },
+    // 价格
+    SetPromotion() {
+      if (
+        this.$store.state.detail.carList != "" &&
+        this.$store.state.detail.carList.length > 0
+      ) {
+        for (let k = 0; k < this.$store.state.detail.carList.length; k++) {
+          this.$store.state.detail.carList[k]["promotion_id"] = 0;
+          this.$store.state.detail.carList[k]["promotion_price"] = 0;
+          let LastPrice = 0;
+          for (
+            let o = 0;
+            o < this.$store.state.detail.carList[k].promotion.length;
+            o++
+          ) {
+            if (
+              Util.Cheng(
+                this.$store.state.detail.carList[k]["price"],
+                this.$store.state.detail.carList[k]["count"]
+              ) >=
+              Number(this.$store.state.detail.carList[k].promotion[o]["V2"])
+            ) {
+              if (
+                Math.abs(
+                  this.$store.state.detail.carList[k].promotion[o]["V"]
+                ) > LastPrice
+              ) {
+                LastPrice = Math.abs(
+                  this.$store.state.detail.carList[k].promotion[o]["V"]
+                );
+                this.$store.state.detail.carList[k][
+                  "promotion_id"
+                ] = this.$store.state.detail.carList[k].promotion[o]["ID"];
+                this.$store.state.detail.carList[k]["promotion_price"] = Number(
+                  this.$store.state.detail.carList[k].promotion[o]["V"]
+                );
+              }
+            }
+          }
+          this.$set(
+            this.$store.state.detail.carList,
+            k,
+            this.$store.state.detail.carList[k]
+          );
+          //console.log(this.$store.state.detail.carList[k]);
+        }
+      }
     },
     // 商品取消选中
     toggle() {
       setTimeout(() => {
-          // 每点击一下都会改变choseBool的布尔值,所以要重置数组
-          this.$store.dispatch('cutCarList',this.carList)
+        // 每点击一下都会改变choseBool的布尔值,所以要重置数组
+        this.$store.dispatch("cutCarList", this.carList);
       }, 0);
-    }
+    },
   },
 };
 </script>

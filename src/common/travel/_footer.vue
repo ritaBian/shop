@@ -40,12 +40,18 @@
         </div>
       </div>
   </van-tabbar-item>
-    <van-tabbar-item class="tabbar-item2 tabbar-radius2" icon="contact" to="/user">
-      <span>我的</span>
-      <template #icon="props">
-        <img :src="props.active ? require('../../../static/icon/wode2.png') : require('../../../static/icon/wode.png')" />
-      </template>
-    </van-tabbar-item>
+  <!-- <van-tabbar-item class="tabbar-item2 tabbar-radius2" icon="contact" to="/user">
+    <span>我的</span>
+    <template #icon="props">
+      <img :src="props.active ? require('../../../static/icon/wode2.png') : require('../../../static/icon/wode.png')" />
+    </template>
+  </van-tabbar-item> -->
+  <van-tabbar-item class="tabbar-item2 tabbar-radius2" icon="contact" to="/shop/mine">
+    <span>我的</span>
+    <template #icon="props">
+      <img :src="props.active ? require('../../../static/icon/wode2.png') : require('../../../static/icon/wode.png')" />
+    </template>
+  </van-tabbar-item>
 
 
 

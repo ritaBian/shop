@@ -86,6 +86,7 @@
       }
 
       .detail {
+        flex:1;
         .title {
           max-width: 274px;
           overflow: hidden;
@@ -103,10 +104,9 @@
                 color: #888888;
                 margin-top: 2px;
               }
-
-              &:last-child {
-                margin-top: 4px;
-              }
+            }
+            .pp {
+              margin-top: 4px;
             }
           }
         }

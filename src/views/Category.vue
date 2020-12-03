@@ -9,7 +9,6 @@
       <v-aside :datas="allData[0].list" v-if="allData[0] && allData[0].list"></v-aside>
       <router-view :datas="allData[0].list"  v-if="allData[0] && allData[0].list"></router-view>
     </section>
-
     <v-baseline></v-baseline>
     <!-- <v-footer></v-footer> -->
     <v-footer2></v-footer2>

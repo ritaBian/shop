@@ -240,6 +240,7 @@ export default {
 },
 SetCartItemCount(vm,pro)
 {
+  console.log(pro)
   //if(pro.DETAIL.TYPE.length>1)
   //{
   //  vm.Toast("多规格产品 请到购物车删除");
@@ -284,7 +285,7 @@ GetCookie(cname) {
   }
   return "";
 },
-IntoCarGlobal(vm,onlyChangePrice=false){
+IntoCarGlobal(vm,onlyChangePrice=false,changeValue){
   var proParaCheck=true;
   Object.keys(vm.$store.state.detail2.selectType).forEach(function(key)
   {
@@ -329,12 +330,12 @@ IntoCarGlobal(vm,onlyChangePrice=false){
     vm.$store.state.detail2.proData.PRO.POINT=typeId['POINT'];
     return;
   }
-console.log(vm.$store.state.detail2.proData)
+  console.log(changeValue,'changeValue')
  const product = [{
    title:vm.$store.state.detail2.proData.PRO.NAME,
    price:vm.$store.state.detail2.proData.PRO.PRICE,
    id:vm.$store.state.detail2.proData.PRO.ID,
-   count:1,
+   count:changeValue||1,
    promotion:vm.$store.state.detail2.proData.PROMOTION,
    yunfei:vm.$store.state.detail2.proData.YUN_FEI,
    type:JSON.parse(JSON.stringify(typeId)),

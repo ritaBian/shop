@@ -146,12 +146,35 @@ const actions = {
 
   //网购物车列表添加数据
   addCarList({commit},res) {
+    console.log(res,'res')
     let IsDeal=false;
     for(let i in state.carList)
     {
       if(state.carList[i]['id']==res[0]['id'] && state.carList[i]['type']['ID']==res[0]['type']['ID'])
       {
         state.carList[i]['count']=state.carList[i]['count']+1;
+        IsDeal=true;
+      }
+    }
+    if(!IsDeal)
+    {//console.log(state.carList);
+      state.carList.push(res);
+    }
+    //console.log(state.carList);
+    //Util.saveLocal(state.carList.concat(),'carList');
+    Util.setLocal(res,'carList',true);
+    commit(types.ADD_PRODUCT);
+    //console.log(Util.getLocal('carList'));
+  },
+
+  //网购物车列表添加数据
+  addCarList2({commit},res) {
+    let IsDeal=false;
+    for(let i in state.carList)
+    {
+      if(state.carList[i]['id']==res[0]['id'] && state.carList[i]['type']['ID']==res[0]['type']['ID'])
+      {
+        state.carList[i]['count']=res[0]['count'];
         IsDeal=true;
       }
     }

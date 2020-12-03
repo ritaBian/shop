@@ -13,27 +13,16 @@
         <img :src="props.active ? require('../../../static/icon/faxian2.png') : require('../../../static/icon/faxian.png')" />
       </template>
     </van-tabbar-item>
-    <!-- :info="carCount" -->
-    <van-tabbar-item  class="tabbar-item tabbar-radius1" icon="shopping-cart-o" to="/car" :badge="carCount">购物车</van-tabbar-item>
-    <!-- <van-tabbar-item  class="tabbar-item tabbar-radius1" icon="shopping-cart-o" to="/shop/car" :badge="carCount">购物车</van-tabbar-item> -->
+
+    <!-- <van-tabbar-item class="tabbar-item tabbar-radius1" icon="shopping-cart-o" to="/car" :badge="carCount">购物车</van-tabbar-item> -->
+    <van-tabbar-item  class="tabbar-item tabbar-radius1" icon="shopping-cart-o" to="/shop/car" :badge="carCount">购物车</van-tabbar-item>
     <!-- <van-tabbar-item class="tabbar-item tabbar-radius1" icon="shopping-cart-o" to="/car" >
       <span>购物车</span>
       <template #icon="props">
 
       </template>
     </van-tabbar-item> -->
-  <van-tabbar-item class="tabbar-item-active" to="/category/all">
-      <div class="tabbar-active-border ">
-        <div class="item_active">
-        </div>
-        <div class="item_active2">
-        </div>
-        <div class="tabbar-active">
-          <div>商品</div>
-        </div>
-      </div>
-  </van-tabbar-item>
-  <!-- <van-tabbar-item class="tabbar-item-active" to="/shopCar">
+  <!-- <van-tabbar-item class="tabbar-item-active" to="/category/all">
       <div class="tabbar-active-border ">
         <div class="item_active">
         </div>
@@ -44,6 +33,17 @@
         </div>
       </div>
   </van-tabbar-item> -->
+  <van-tabbar-item class="tabbar-item-active" to="/shopCar">
+      <div class="tabbar-active-border ">
+        <div class="item_active">
+        </div>
+        <div class="item_active2">
+        </div>
+        <div class="tabbar-active">
+          <div>商品</div>
+        </div>
+      </div>
+  </van-tabbar-item>
     <!-- <van-tabbar-item class="tabbar-item2 tabbar-radius2" icon="contact" to="/user">
       <span>我的</span>
       <template #icon="props">
@@ -95,7 +95,7 @@
             <ul>
               <li v-for="(k,i) in v.SUB" 
                 :class="{'choice':$isEmpty(selectType,v.ID+'',0)==k.ID}" 
-                @click="changeType(v.ID,k.ID)"
+                @click="changeType(v,v.ID,k.ID)"
                 >{{k.NAME}}</li>
               <!-- <li class="choice">6+饽花2斤全麦(4两)</li>
               <li class="other">6全麦(4两)6+年糕3块</li> -->
@@ -148,14 +148,15 @@ export default {
           name: this.selected
         })
       },
-      changeType(typeID,ID) {
+      changeType(v,typeID,ID) {
+        console.log(v,typeID,ID)
         this.$store.commit('CHANGE_COL_SELECTED2', [typeID,ID]);
         //this.$parent.$emit("addToCart",true);
         Util.IntoCarGlobal(this,true);
         this.$forceUpdate();
       },
       AddToCard() {
-        Util.IntoCarGlobal(this);
+        Util.IntoCarGlobal(this,false,this.value);
 
       },
       getTypeSelected(typeID) {

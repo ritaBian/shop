@@ -2,7 +2,7 @@
   <div class="mine">
     <article>
       <div class="set">
-        <img src="@/assets/shop/mine/set.png" alt="" />
+        <img src="@/assets/shop/mine/set.png" alt="" @click="logout"  />
         <img src="@/assets/shop/mine/message.png" alt="" />
       </div>
       <div class="head">
@@ -195,6 +195,18 @@ export default {
     onChange(index) {
       this.index = index;
     },
+    logout(){
+      this.$dialog.confirm({
+        title: '',
+        message: '确定退出么？'
+      }).then(() => {
+        this.$store.commit('CHANGE_USER',0,'','');
+        this.$router.replace({path: '/login'});
+      }).catch(() => {
+        // on cancel
+      });
+
+      },
   },
 };
 </script>
