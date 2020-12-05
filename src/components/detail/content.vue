@@ -13,7 +13,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .content {
     width: 98%;
     margin-top: 10px;

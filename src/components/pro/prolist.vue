@@ -63,6 +63,7 @@ import Baseline from '@/common/_baseline.vue'
       checkPic:function(picurl){return this.$conf.domain + '/' + picurl;},
       AddIntoCart:function(proid,pro)
       {
+        console.log(pro)
         this.$store.commit('SET_DATAS2',pro);
         if(pro.DETAIL.GUIGE.hasOwnProperty("GUI_GE_1"))
         {

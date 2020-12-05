@@ -17,6 +17,8 @@ const state = {
   fetchLoading:false,     //全局加载状态的Loading
   selectedList:'',         //已选择的购物车商品列表
   unSelectedList:'',      //未选择的购物车商品列表,提交订单后用它替换carList
+  proDetails:{},//点击详情的时候该产品的详情
+  goBuy:[]
 }
 
 //更改 store 中的状态的唯一方法:提交 mutation
@@ -108,8 +110,18 @@ const mutations = {
 
   ['SET_UNSELECTEDLIST'] (state) {
     state.unSelectedList = Util.getLocal('unSelectedList')
-  }
+  },
 
+  // 点击详情该商品的详情
+  ['GET_PRODETAILS'] (state,res){
+    state.proDetails = res
+  },
+
+  // 当前商品直接购买，不添加购物车
+  ['BUY_SOME'](state,res){
+    console.log(res)
+    state.goBuy = res
+  }
 }
 
 let vm = new Vue({});

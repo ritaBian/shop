@@ -132,7 +132,7 @@
     <div class="service">
       <div class="title">更多服务</div>
       <ul>
-        <li>
+        <li @click="showList = true">
           <img
             src="@/assets/shop/mine/service1.png"
             style="width: 19px; height: 23px"
@@ -174,6 +174,7 @@
         </li>
       </ul>
     </div>
+    <addressed :show="showList" @getMessage="changeShow"></addressed>
     <!-- 底部栏 -->
     <v-footer2></v-footer2>
   </div>
@@ -181,19 +182,25 @@
 <script>
 import "@/css/shop/mine.scss";
 import Footer2 from "@/common/travel/_footer2.vue";
+import addressed from "./address.vue"
 export default {
   components: {
     "v-footer2": Footer2,
+    addressed
   },
   data() {
     return {
       index: "",
+      showList:false,
     };
   },
   methods: {
     // swiper切换
     onChange(index) {
       this.index = index;
+    },
+    changeShow(val){
+      this.showList = val
     },
     logout(){
       this.$dialog.confirm({

@@ -14,7 +14,7 @@
           <span class="tel">{{ currentContact.tel || "" }}</span>
           <span class="tag" v-if="currentContact.isDefault == 1">默认</span>
         </div>
-        <div class="house">{{currentContact.address}}</div>
+        <div class="house">{{ currentContact.address }}</div>
       </section>
       <img src="@/assets/shop/buy/change.png" alt="" />
     </div>
@@ -76,6 +76,7 @@
       <div class="btn" @click="payConfirm">提交订单</div>
     </div>
 
+    <addressed :show="showList" @getMessage="changeShow"></addressed>
     <!-- <van-contact-card
       :type="cardType"
       :name="currentContact.name || ''"
@@ -120,58 +121,20 @@
       </van-cell-group>
     </van-popup>
 
-    <!-- 联系人列表 -->
-    <van-popup v-model="showList" position="bottom">
-      <van-address-list
-        v-model="chosenAddressId"
-        :list="list"
-        @add="onAdd"
-        @edit="onEdit"
-        @select="onSelect"
-      />
-    </van-popup>
-
-    <!-- 联系人编辑 -->
-    <van-popup v-model="showEdit" position="top" style="height: 100vh">
-      <van-nav-bar
-        fixed
-        title="收货信息"
-        left-text="返回"
-        left-arrow
-        @click-left="showEdit = false"
-      />
-      <van-address-edit
-        style="padding-top: 50px"
-        :area-list="areaList"
-        :address-info="addressInfo"
-        @delete="onDelete"
-        show-set-default
-        @save="onSave"
-      >
-        <div slot="default">
-          <div style="padding-left: 18px">地图标注:</div>
-          <iframe
-            id="baidumapiframe"
-            :src="
-              '/mobile/map.html?lng=' +
-              (addressInfo.lng || 0) +
-              '&lat=' +
-              (addressInfo.lat || 0)
-            "
-            style="width: 100%; height: 300px; border: 0px"
-            allowtransparency="true"
-          ></iframe>
-        </div>
-      </van-address-edit>
-    </van-popup>
+    
   </div>
 </template>
 <script>
 import "@/css/shop/buy.scss";
 import { areaList } from "@/util/area.js";
-import { Toast } from 'vant'
-import {MessageBox} from 'mint-ui';
+import { Toast } from "vant";
+import { MessageBox } from "mint-ui";
+import Util from "../../util/common";
+import addressed from "./address.vue"
 export default {
+  components:{
+    addressed
+  },
   data() {
     return {
       value: "",
@@ -200,6 +163,8 @@ export default {
       list: [],
       areaList: this.areaList,
       totalSale: 0,
+      // 要购买的商品
+      carList: [],
     };
   },
   computed: {
@@ -210,36 +175,30 @@ export default {
     cardType() {
       return this.chosenContactId !== null ? "edit" : "add";
     },
-    //所有商品列表
-    carList() {
+    //已勾选的所有商品列表
+    selectCarList() {
       return this.$store.state.detail.selectedList;
     },
     // 商品价格总和
     allpay() {
       let allpay = 0;
-      if (this.$store.state.detail.selectedList) {
+      if (this.carList) {
         for (let i = 0; i < this.carList.length; i++) {
           allpay = this.$Jia(
             allpay,
-            this.$Cheng(
-              this.$store.state.detail.selectedList[i].price,
-              this.$store.state.detail.selectedList[i].count
-            )
+            this.$Cheng(this.carList[i].price, this.carList[i].count)
           );
-          //allpay += this.$store.state.detail.selectedList[i].price*this.$store.state.detail.selectedList[i].count;
+          //allpay += this.carList[i].price*this.carList[i].count;
           allpay = this.$Jia(
             allpay,
             this.proYunFei(
-              this.$store.state.detail.selectedList[i].yunfei,
+              this.carList[i].yunfei,
               this.chosenAddressId,
-              this.$store.state.detail.selectedList[i].count
+              this.carList[i].count
             )
           );
-          //allpay=allpay+this.proYunFei(this.$store.state.detail.selectedList[i].yunfei,this.chosenAddressId,this.$store.state.detail.selectedList[i].count);
-          allpay = this.$Jia(
-            allpay,
-            this.$store.state.detail.selectedList[i].promotion_price
-          );
+          //allpay=allpay+this.proYunFei(this.carList[i].yunfei,this.chosenAddressId,this.carList[i].count);
+          allpay = this.$Jia(allpay, this.carList[i].promotion_price);
         }
       }
 
@@ -318,127 +277,54 @@ export default {
       }.bind(this),
       true
     );
+    if (this.$route.query.type == 2) {
+      //立即购买
+      this.carList = this.$store.state.detail.goBuy;
+    } else {
+      this.carList = this.selectCarList;
+    }
+    this.SetPromotion(this.carList);
     this.carList.forEach((item) => {
       this.totalSale += this.proYunFei(item.yunfei, this.chosenAddressId);
     });
   },
+  watch: {
+    orderApi: function (val) {
+      this.pay.Money = Util.Jia(this.orderApi.order.rmb, 0);
+      this.pay.Point = Util.Jia(this.orderApi.order.point, 0);
+
+      if (
+        Util.Jia(this.$store.state.detail.user.point, 0) <=
+        Util.Jia(this.orderApi.order.point, 0)
+      ) {
+        this.pay.Point = Util.Jia(this.$store.state.detail.user.point, 0);
+      } else {
+        this.pay.Point = Util.Jia(this.orderApi.order.point, 0);
+      }
+      //如果余额+积分 低于 支付金额
+      if (
+        Util.Jia(this.$store.state.detail.user.rmb, this.pay.Point) <
+        Util.Jia(this.orderApi.order.rmb, 0)
+      ) {
+        this.pay.Money = Util.Jia(this.$store.state.detail.user.rmb, 0);
+      } else {
+        this.pay.Money = Util.Jia(this.orderApi.order.rmb, 0);
+      }
+
+      if (
+        Util.Jia(this.pay.Money, this.pay.Point) <
+        Util.Jia(this.orderApi.order.rmb, 0)
+      ) {
+        this.pay.OnLine = Util.Jian(
+          Util.Jian(this.orderApi.order.rmb, this.pay.Point),
+          this.pay.Money
+        );
+      }
+    },
+  },
   methods: {
-    onAdd() {
-      this.addressInfo = {};
-      this.editIndex = null;
-      this.showEdit = true;
-      //Toast('新增收货地址');
-    },
-    onSelect(item, index) {
-      //console.log(item);console.log(index);
-      this.chosenAddressId = item["id"];
-      this.$forceUpdate();
-      this.showList = false;
-    },
-    onEdit(info, index) {
-      console.log(info);
-      this.editIndex = index;
-      this.addressInfo = {
-        id: info.id,
-        lng: info.lng,
-        lat: info.lat,
-        addressDetail: info.address,
-        name: info.name,
-        tel: info.tel,
-        areaCode: info.area_id,
-        isDefault: parseInt(info.isDefault) == 1 ? true : false,
-      };
-      this.showEdit = true;
-      //this.$forceUpdate();
-      //Toast('编辑收货地址:' + index);
-    },
-    // 删除联系人
-    onDelete(info) {
-      var obj = { id: info.id };
-      this.$dopost(
-        "/sysapi/address/delete/",
-        obj,
-        function (res) {
-          if (
-            res.data &&
-            typeof res.data.error != "undefined" &&
-            res.data.error === 0 &&
-            res.data.data.state == "1"
-          ) {
-            var arr = [];
-            for (let k = 0; k < this.list.length; k++) {
-              let item = this.list[k];
-              if (item["id"] != info.id) arr.push(item);
-            }
-            this.list = arr;
-            this.showEdit = false;
-          } else {
-            Toast(res.data && res.data.mess ? res.data.mess : "出错了！");
-          }
-        }.bind(this),
-        true
-      );
-    },
-    // 保存联系人
-    onSave(info) {
-      //alert(window.frames['baidumapiframe'].contentWindow.lng+','+window.frames['baidumapiframe'].contentWindow.lat);
-      console.log(this.addressInfo);
-      var obj = {
-        id: info.id || 0,
-        address: info.addressDetail || "",
-        name: info.name || "",
-        tel: info.tel || "",
-        area_id: info.areaCode || "",
-        Isdefault: info.isDefault ? 1 : 0,
-      };
-
-      if (!obj["name"] || !obj["tel"]) {
-        Toast("请输入完整收货信息");
-        console.log(obj);
-        return;
-      }
-      obj["lng"] = window.frames["baidumapiframe"].contentWindow.lng;
-      obj["lat"] = window.frames["baidumapiframe"].contentWindow.lat;
-      if (obj["lng"] == 0) {
-        Toast("请定位收货地址的位置");
-        return;
-      }
-      this.$dopost(
-        "/sysapi/address/add/",
-        obj,
-        function (res) {
-          if (
-            res.data &&
-            typeof res.data.error != "undefined" &&
-            res.data.error === 0
-          ) {
-            if (this.editIndex == null) {
-              this.list.push({
-                id: res.data.data.id,
-                name: info.name,
-                tel: info.tel,
-                area_id: info.areaCode,
-                isDefault: info.isDefault ? 1 : 0,
-                address: info.addressDetail,
-              }); //info.province+info.city+info.county+
-            } else {
-              this.list[this.editIndex]["name"] = info.name;
-              this.list[this.editIndex]["tel"] = info.tel;
-              this.list[this.editIndex]["area_id"] = info.areaCode;
-              this.list[this.editIndex]["isDefault"] = info.isDefault ? 1 : 0;
-              this.list[this.editIndex]["address"] = info.addressDetail; //info.province+info.city+info.county+
-            }
-
-            this.chosenAddressId = res.data.data.id;
-            this.showList = false;
-            this.showEdit = false;
-          } else {
-            Toast(res.data && res.data.mess ? res.data.mess : "出错了！");
-          }
-        }.bind(this),
-        true
-      );
-      //
+    changeShow(val){
+      this.showList = val
     },
     proYunFei(fei, chosenAddressId, count) {
       count = parseInt(count);
@@ -465,6 +351,30 @@ export default {
         price = 0;
       }
       return price;
+    },
+    // 设置优惠价格
+    SetPromotion(list) {
+      if (list != "" && list.length > 0) {
+        for (let k = 0; k < list.length; k++) {
+          list[k]["promotion_id"] = 0;
+          list[k]["promotion_price"] = 0;
+          let LastPrice = 0;
+          for (let o = 0; o < list[k].promotion.length; o++) {
+            if (
+              Util.Cheng(list[k]["price"], list[k]["count"]) >=
+              Number(list[k].promotion[o]["V2"])
+            ) {
+              if (Math.abs(list[k].promotion[o]["V"]) > LastPrice) {
+                LastPrice = Math.abs(list[k].promotion[o]["V"]);
+                list[k]["promotion_id"] = list[k].promotion[o]["ID"];
+                list[k]["promotion_price"] = Number(list[k].promotion[o]["V"]);
+              }
+            }
+          }
+          this.$set(list, k, list[k]);
+          //console.log(this.$store.state.detail.carList[k]);
+        }
+      }
     },
     ToPay(val) {
       let obj = {

@@ -1,7 +1,3 @@
-<!--
- * @Descripttion: 购物车
- * @Author: bjp
--->
 <template>
   <div class="shopCar">
     <div class="top">
@@ -35,14 +31,7 @@
     <div class="bar">
       <div class="left">
         <van-sidebar v-model="activeKey" @change="sideChange">
-          <van-sidebar-item v-for="(item,index) in allData[0].list" :key="index" :title="item.NAME"  />
-          <!-- <van-sidebar-item title="乡浓土产" />
-          <van-sidebar-item title="干鲜水产" />
-          <van-sidebar-item title="畜牧家禽" />
-          <van-sidebar-item title="饮品调味" />
-          <van-sidebar-item title="健康保健" />
-          <van-sidebar-item title="工匠手艺" />
-          <van-sidebar-item title="旅游用品" /> -->
+          <van-sidebar-item v-for="(item,index) in (allData?allData[0].list:[])" :key="index" :title="item.NAME"  />
         </van-sidebar>
       </div>
       <div class="right">
@@ -77,21 +66,21 @@
               class="item"
               v-for="(k, index) in list"
               :key="index"
-              @click="$router.push({path:'/shop/details',query:{id:k.ID}})"
+              @click="goDetails(k)"
             >
               <img v-lazy="checkPic(k.PIC)" alt="" class="item-img" />
               <div class="pro">
                 <div class="title">{{ k.NAME }}</div>
                 <div class="price">
                   <div class="new">￥{{ k.PRICE }}</div>
-                  <div class="old">￥101</div>
+                  <div class="old">￥{{parseInt(k.PRICE * Number(3+'.'+(index+1)))}}</div>
                 </div>
                 <!-- <div class="change">
                   <p>99选3</p>
                   <p>新品</p>
                 </div> -->
                 <div class="added">
-                  <div class="grade">96%好评</div>
+                  <div class="grade">{{ random() }}好评</div>
                   <section>
                     <div
                       class="left"
@@ -105,7 +94,7 @@
                           vertical-align: middle;
                           cursor: pointer;
                         "
-                        src="static/sub_red_empty.png"
+                        :src="require('../../../static/sub_red_empty.png')"
                       />
                       <div
                         style="
@@ -126,7 +115,7 @@
                         vertical-align: middle;
                         cursor: pointer;
                       "
-                      src="static/add_red.png"
+                      :src="require('../../../static/add_red.png')"
                     />
                   </section>
                 </div>
@@ -182,7 +171,9 @@ export default {
       finished: false,
       pageNum: 0,
       // 左边
-      allData:[],
+      allData:[
+        {list:[]}
+      ],
       Sortid: 0,
     };
   },
@@ -194,7 +185,7 @@ export default {
     "$store.state.category.tabIndex"(val, old) {
       if (val != old) {
         this.$store.state.detail.lastpara =
-          this.allData[0].list[this.$store.state.category.tabIndex].ID || 0;
+        this.allData[0].list[this.$store.state.category.tabIndex].ID || 0;
         this.list = [];
         this.pageNum = 0;
         this.Sortid = 0;
@@ -230,6 +221,9 @@ export default {
     },
     checkPic: function (picurl) {
       return this.$conf.domain + "/" + picurl;
+    },
+    random() {
+      return parseInt(Math.random() * (100 - 90 + 1) + 90, 10) + "%";
     },
     // 左边导航栏切换
     sideChange(i){
@@ -301,6 +295,10 @@ export default {
           }
         }.bind(this)
       );
+    },
+    goDetails(k){
+      this.$store.commit("GET_PRODETAILS", k);
+      this.$router.push({path:'/shop/details',query:{id:k.ID}})
     },
     AddIntoCart: function (proid, pro) {
       console.log(pro);

@@ -1,7 +1,3 @@
-<!--
- * @Descripttion: 
- * @Author: bjp
--->
 <template>
   <div class="shopping_car">
     <van-nav-bar
@@ -110,24 +106,29 @@
     >
 
     <div class="other">
-      <div class="item" v-for="(item, index) in 4" :key="index">
-        <div class="img">
-          <img src="@/assets/shop/details/morePro.png" alt="" />
-          <span class="green">新品</span>
-        </div>
-        <div class="desc">
-          青岛特产只是下次吧想三只小熊在想虚啥地方说的说的发生大幅地方知道
-        </div>
-        <section>
-          <div class="price">
-            <div class="new"><span>￥</span>59</div>
-            <div class="old"><span>￥</span>108</div>
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        finished-text="已经到底了"
+        @load="onLoad"
+      >
+        <div class="item" v-for="(k, index) in list" :key="index" @click="goDetails(k)">
+          <div class="img">
+            <img v-lazy="checkPic(k.PIC)" alt="" />
+            <span class="green">新品</span>
           </div>
-          <div class="grade">96%好评</div>
-        </section>
-      </div>
+          <div class="desc">{{ k.NAME }}</div>
+          <section>
+            <div class="price">
+              <div class="new"><span>￥</span>{{ k.PRICE }}</div>
+              <div class="old"><span>￥</span>{{parseInt(k.PRICE * Number(3+'.'+(index+1)))}}</div>
+            </div>
+            <div class="grade">{{random()}}好评</div>
+          </section>
+        </div>
+      </van-list>
     </div>
-    <div class="nonew">已经到底了</div>
+    <!-- <div class="nonew">已经到底了</div> -->
 
     <div class="footer">
       <van-checkbox v-model="checked" icon-size="18px" @click="checkAll2"
@@ -141,9 +142,7 @@
           </div>
           <div class="sale">商品再购<span>63.00</span>元享包邮</div>
         </div>
-        <div class="buy" @click="goPay">
-          结算({{ selectCount }})
-        </div>
+        <div class="buy" @click="goPay">结算({{ selectCount }})</div>
       </section>
     </div>
     <!-- 底部栏 -->
@@ -165,6 +164,10 @@ export default {
       result: [],
       isAll: false,
       checked: "",
+      list: [],
+      loading: false,
+      finished: false,
+      pageNum: 0,
     };
   },
   computed: {
@@ -243,9 +246,11 @@ export default {
     },
     get(index) {
       this.$refs["swipeCell" + index][0].open();
-      console.log("66666");
     },
-    // 删除
+    checkPic: function (picurl) {
+      return this.$conf.domain + "/" + picurl;
+    },
+    // 左滑删除
     cut(i) {
       this.$dialog
         .alert({
@@ -311,41 +316,75 @@ export default {
       }
     },
     // 步进器变化
-    stepChange(product){
-      this.$store.commit('RESET_COUNT');
-      this.$store.dispatch('cutCarList',this.carList);
+    stepChange(product) {
+      this.$store.commit("RESET_COUNT");
+      this.$store.dispatch("cutCarList", this.carList);
     },
     // 步进器+
     plusChange(product) {
-      this.$store.commit('RESET_COUNT');
-      this.$store.dispatch('addCarList2',[product]);
+      this.$store.commit("RESET_COUNT");
+      this.$store.dispatch("addCarList2", [product]);
     },
     // 步进器-
     minusChange(product) {
-      product.ID = product.id
-      Util.SetCartItemCount(this,product);
+      product.ID = product.id;
+      Util.SetCartItemCount(this, product);
     },
     //点击跳转到支付页
-    goPay(){
-        if(this.$store.state.login.token!=1)
-        {
-          this.$toast('请先登录会员！');
-          return;
-          //this.$router.push({path:'/login'})
-        }
-        // 如果有选择商品才能跳转
-        if(this.$store.getters.selectedList.length) {
-          // 保存+缓存选择的商品 ,在支付页能用到
-          this.$store.dispatch('setSelectedList')
-          this.$router.push({path:'/shop/buy'})
-
-
-      } else {
-
-        alert('你还没选择商品')
-
+    goPay() {
+      if (this.$store.state.login.token != 1) {
+        this.$toast("请先登录会员！");
+        return;
+        //this.$router.push({path:'/login'})
       }
-
+      // 如果有选择商品才能跳转
+      if (this.$store.getters.selectedList.length) {
+        // 保存+缓存选择的商品 ,在支付页能用到
+        this.$store.dispatch("setSelectedList");
+        this.$router.push({ path: "/shop/buy" });
+      } else {
+        alert("你还没选择商品");
+      }
+    },
+    random(){
+      return parseInt(Math.random()*(100-90+1)+90,10) + '%'
+    },
+    // 其他产品展示
+    onLoad() {
+      //this.loading=true;
+      this.$dopost(
+        "/sysapi/pro/list/",
+        {
+          get_detail: 1,
+          viewloading: 0,
+          page: this.pageNum + 1,
+          sort_id: this.$route.query.sortid || 0,
+        },
+        function (res) {
+          if (
+            res.data &&
+            typeof res.data.error != "undefined" &&
+            res.data.error === 0
+          ) {
+            for (let i = 0; i < res.data.data.PRO.length; i++) {
+              this.list.push(res.data.data.PRO[i]);
+            }
+            this.pageNum = parseInt(res.data.data.page);
+            if (
+              parseInt(res.data.data.page) >= parseInt(res.data.data.allpage)
+            ) {
+              this.finished = true;
+            }
+            this.loading = false;
+          } else {
+            Toast(res.data && res.data.mess ? res.data.mess : "接口错误");
+          }
+        }.bind(this)
+      );
+    },
+    goDetails(k){
+      this.$store.commit("GET_PRODETAILS", k);
+      this.$router.push({path:'/shop/details',query:{id:k.ID}})
     },
     // 价格
     SetPromotion() {

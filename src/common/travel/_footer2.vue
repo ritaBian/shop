@@ -53,7 +53,7 @@
   <van-tabbar-item class="tabbar-item2 tabbar-radius2" icon="contact" to="/shop/mine">
     <span>我的</span>
     <template #icon="props">
-      <!-- <img :src="props.active ? require('../../../static/icon/wode2.png') : require('../../../static/icon/wode.png')" /> -->
+      <img :src="props.active ? require('../../../static/icon/wode2.png') : require('../../../static/icon/wode.png')" />
     </template>
   </van-tabbar-item>
 
@@ -203,13 +203,13 @@ watch:{
             case '/index':
               this.active = 1;
               break;
-            case '/car':
+            case '/shop/car':
               this.active = 2;
               break;
-            case '/category/all':
+            case '/shopCar':
               this.active = 3;
               break;
-            case '/user':
+            case '/shop/mine':
               this.active = 4;
               break;
           }
