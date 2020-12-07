@@ -277,8 +277,10 @@
     }
     section{
       @extend .disflay;
+      // justify-content: flex-start;
       align-items: flex-end;
       padding-right: 10px;
+      // flex: 1;
       .total{
         span{
           color: #fb4c4c;

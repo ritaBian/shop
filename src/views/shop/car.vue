@@ -8,6 +8,7 @@
       @click-left="$router.go(-1)"
     />
     <div class="pro" v-if="count && carList">
+      <v-gologin v-if="!$store.state.login.token"></v-gologin>
       <div class="item">
         <div class="title">
           <div class="left">
@@ -77,6 +78,7 @@
         </van-checkbox-group>
       </div>
     </div>
+    <v-nothing v-else></v-nothing>
 
     <!-- 过期 -->
     <div class="outTime">
@@ -141,7 +143,8 @@
             总计:
             <span>￥{{ allpay }}</span>
           </div>
-          <div class="sale">商品再购<span>63.00</span>元享包邮</div>
+          <div class="sale" v-if="yunfei > 0">商品再购<span>63.00</span>元享包邮</div>
+          <div class="sale" v-else>包邮</div>
         </div>
         <div class="buy" @click="goPay">结算({{ selectCount }})</div>
       </section>
@@ -154,9 +157,13 @@
 import "@/css/shop/car.scss";
 import Footer2 from "@/common/travel/_footer2.vue";
 import Util from "../../util/common";
+import Nothing from '@/components/car/nothing.vue'
+import Gologin from '@/components/car/gologin.vue'
 export default {
   components: {
     "v-footer2": Footer2,
+    'v-nothing':Nothing,
+    'v-gologin': Gologin
   },
   data() {
     return {
@@ -169,11 +176,16 @@ export default {
       loading: false,
       finished: false,
       pageNum: 0,
+      yunfei:0,
     };
   },
   computed: {
     carList() {
-      return this.$store.state.detail.carList;
+      let list = this.$store.state.detail.carList;
+      list.forEach(item =>{
+        this.yunfei += item.yunfei[0]['NAME']
+      })
+      return list;
     },
     count() {
       return this.$store.state.detail.count;
