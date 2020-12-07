@@ -66,7 +66,7 @@ export default {
       chosenAddressId: null,
       showList: false,
       showEdit: false,
-      areaList: this.areaList,
+      areaList: areaList,
       addressInfo: {},
       list: [],
     };
