@@ -65,6 +65,7 @@
             :finished="finished"
             finished-text="没有更多了"
             @load="onLoad"
+            :immediate-check="false"
           >
             <div
               class="item"
@@ -182,7 +183,7 @@ export default {
     };
   },
   created() {
-    // this.getLeft();
+    this.getLeft();
     this.activeKey = this.$store.state.category.tabIndex;
   },
   watch: {
@@ -244,6 +245,8 @@ export default {
             res.data.error === 0
           ) {
             this.allData = res.data.data;
+            // 获取右侧列表
+            this.onLoad()
           } else {
             Toast(res.data && res.data.mess ? res.data.mess : "接口错误");
           }
@@ -251,26 +254,6 @@ export default {
       );
     },
     onLoad() {
-      // 获取左边滑动
-      this.$dopost(
-        "/sysapi/pro/sort/",
-        null,
-        function (res) {
-          if (
-            res.data &&
-            typeof res.data.error != "undefined" &&
-            res.data.error === 0
-          ) {
-            this.allData = res.data.data;
-            // 获取右侧列表
-            this.getList()
-          } else {
-            Toast(res.data && res.data.mess ? res.data.mess : "接口错误");
-          }
-        }.bind(this)
-      );
-    },
-    getList(){
       //this.loading=true;
       this.$dopost(
         "/sysapi/pro/list/",
