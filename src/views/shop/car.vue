@@ -16,6 +16,7 @@
               icon-size="18px"
               @click="checkAll"
               v-model="isAll"
+              checked-color="#01a862"
               >商城自营仓</van-checkbox
             >
           </div>
@@ -34,7 +35,7 @@
             >
               <div class="every">
                 <div class="radio">
-                  <van-checkbox :name="index"></van-checkbox>
+                  <van-checkbox :name="index" checked-color="#01a862"></van-checkbox>
                 </div>
                 <div class="goBuy">
                   <img :src="k.imgPath" alt="" />
@@ -131,7 +132,7 @@
     <!-- <div class="nonew">已经到底了</div> -->
 
     <div class="footer">
-      <van-checkbox v-model="checked" icon-size="18px" @click="checkAll2"
+      <van-checkbox v-model="checked" icon-size="18px" @click="checkAll2" checked-color="#01a862"
         >全选</van-checkbox
       >
       <section>

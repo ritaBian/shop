@@ -31,7 +31,11 @@
     <div class="bar">
       <div class="left">
         <van-sidebar v-model="activeKey" @change="sideChange">
-          <van-sidebar-item v-for="(item,index) in (allData?allData[0].list:[])" :key="index" :title="item.NAME"  />
+          <van-sidebar-item
+            v-for="(item, index) in allData ? allData[0].list : []"
+            :key="index"
+            :title="item.NAME"
+          />
         </van-sidebar>
       </div>
       <div class="right">
@@ -55,7 +59,7 @@
           <img src="@/assets/shop/banner.png" alt="" class="right-banner" />
         </div>
         <!-- 列表 -->
-        <div class="list">
+        <div class="list" style="padding-bottom: 80px;">
           <van-list
             v-model="loading"
             :finished="finished"
@@ -73,7 +77,9 @@
                 <div class="title">{{ k.NAME }}</div>
                 <div class="price">
                   <div class="new">￥{{ k.PRICE }}</div>
-                  <div class="old">￥{{parseInt(k.PRICE * Number(3+'.'+(index+1)))}}</div>
+                  <div class="old">
+                    ￥{{ parseInt(k.PRICE * Number(3 + "." + (index + 1))) }}
+                  </div>
                 </div>
                 <!-- <div class="change">
                   <p>99选3</p>
@@ -171,21 +177,19 @@ export default {
       finished: false,
       pageNum: 0,
       // 左边
-      allData:[
-        {list:[]}
-      ],
+      allData: [{ list: [{ list: [] }] }],
       Sortid: 0,
     };
   },
-  created(){
-    this.getLeft()
-    this.activeKey = this.$store.state.category.tabIndex
+  created() {
+    this.getLeft();
+    this.activeKey = this.$store.state.category.tabIndex;
   },
   watch: {
     "$store.state.category.tabIndex"(val, old) {
       if (val != old) {
         this.$store.state.detail.lastpara =
-        this.allData[0].list[this.$store.state.category.tabIndex].ID || 0;
+          this.allData[0].list[this.$store.state.category.tabIndex].ID || 0;
         this.list = [];
         this.pageNum = 0;
         this.Sortid = 0;
@@ -213,7 +217,7 @@ export default {
       } else {
         this.optionValue = item;
       }
-      this.Sortid = item.ID
+      this.Sortid = item.ID;
       // this.optionValue = item
       // this.page_index = 1;
       // this.pageList = [];
@@ -226,8 +230,8 @@ export default {
       return parseInt(Math.random() * (100 - 90 + 1) + 90, 10) + "%";
     },
     // 左边导航栏切换
-    sideChange(i){
-      this.$store.commit('CHANGE_TABINDEX',i)
+    sideChange(i) {
+      this.$store.commit("CHANGE_TABINDEX", i);
     },
     // 获取左边滑动
     getLeft() {
@@ -258,7 +262,8 @@ export default {
           sort_id:
             this.Sortid > 0
               ? this.Sortid
-              : this.allData[0].list[this.$store.state.category.tabIndex].ID || 0,
+              : this.allData[0].list[this.$store.state.category.tabIndex].ID ||
+                0,
         },
         function (res) {
           if (
@@ -296,9 +301,9 @@ export default {
         }.bind(this)
       );
     },
-    goDetails(k){
+    goDetails(k) {
       this.$store.commit("GET_PRODETAILS", k);
-      this.$router.push({path:'/shop/details',query:{id:k.ID}})
+      this.$router.push({ path: "/shop/details", query: { id: k.ID } });
     },
     AddIntoCart: function (proid, pro) {
       console.log(pro);
