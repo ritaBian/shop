@@ -37,21 +37,30 @@
           color: #888888;
         }
       }
+      /deep/.van-swipe-cell__right{
+        .van-button--square{
+          width: 65px;
+
+        }
+      }
       /deep/.van-button{
         height: 100% ;
         float: left;
       }
-      .red{
-        background-color: #fa4545;
-        border-color:#fa4545 ;
+      .simp{
+        background-color: #666;
+        border-color: #666;
+        .van-button__text{
+          white-space: pre;
+        }
       }
       .get{
         background-color: #3c3c3c;
         border-color: #3c3c3c;
       }
-      .simp{
-        background-color: #666;
-        border-color: #666;
+      .red{
+        background-color: #fa4545;
+        border-color:#fa4545 ;
       }
       .every{
         @extend .disflay;

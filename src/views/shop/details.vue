@@ -200,7 +200,7 @@
               <div class="new"><span>￥</span>{{ k.PRICE }}</div>
               <div class="old"><span>￥</span>{{parseInt(k.PRICE * Number(3+'.'+(index+1)))}}</div>
             </div>
-            <div class="grade">{{ random() }}好评</div>
+            <div class="grade">96%好评</div>
           </section>
         </div>
       </van-list>

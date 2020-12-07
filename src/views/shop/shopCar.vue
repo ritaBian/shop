@@ -22,10 +22,10 @@
     </div>
     <div class="select_border_position">
       <van-dropdown-menu active-color="#01a862">
-        <van-dropdown-item v-model="value1" :options="option1" title="包邮" />
-        <van-dropdown-item v-model="value2" :options="option2" title="包邮" />
-        <van-dropdown-item v-model="value1" :options="option1" title="包邮" />
-        <van-dropdown-item v-model="value2" :options="option2" title="包邮" />
+        <van-dropdown-item v-model="value1" :options="option1" title="区域" />
+        <van-dropdown-item v-model="value2" :options="option2" title="综合" />
+        <van-dropdown-item v-model="value1" :options="option1" title="价格" />
+        <van-dropdown-item v-model="value2" :options="option2" title="筛选" />
       </van-dropdown-menu>
     </div>
     <div class="bar">
@@ -82,12 +82,12 @@
                     ￥{{ parseInt(k.PRICE * Number(3 + "." + (index + 1))) }}
                   </div>
                 </div>
-                <!-- <div class="change">
+                <div class="change">
                   <p>99选3</p>
                   <p>新品</p>
-                </div> -->
+                </div>
                 <div class="added">
-                  <div class="grade">{{ random() }}好评</div>
+                  <div class="grade">96%好评</div>
                   <section>
                     <div
                       class="left"
@@ -165,14 +165,6 @@ export default {
       optionValue: {
         id: "",
       },
-      optionList: [
-        { id: 1, name: "鱼类" },
-        { id: 2, name: "贝类" },
-        { id: 3, name: "海产干货" },
-        { id: 4, name: "海参" },
-        { id: 5, name: "鱼类" },
-        { id: 6, name: "贝类" },
-      ],
       list: [],
       loading: false,
       finished: false,

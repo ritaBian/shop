@@ -76,7 +76,7 @@
       <div class="btn" @click="payConfirm">提交订单</div>
     </div>
 
-    <addressed :show="showList" @getMessage="changeShow"></addressed>
+    <addressed :show="showList" @getMessage="changeShow" @getaddressId="getaddressId"></addressed>
     <!-- <van-contact-card
       :type="cardType"
       :name="currentContact.name || ''"
@@ -325,6 +325,9 @@ export default {
   methods: {
     changeShow(val){
       this.showList = val
+    },
+    getaddressId(id){
+      this.chosenAddressId = id
     },
     proYunFei(fei, chosenAddressId, count) {
       count = parseInt(count);

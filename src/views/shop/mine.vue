@@ -14,7 +14,7 @@
       </div>
       <div class="tab">
         <ul>
-          <li>
+          <li @click="$router.push('/shop/car')">
             <div>{{$store.state.detail.countAll>0?$store.state.detail.countAll:0}}</div>
             <div>购物车</div>
           </li>

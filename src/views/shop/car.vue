@@ -57,21 +57,21 @@
                 </div>
               </div>
               <template #right>
-                <van-button
-                  @click="cut(index)"
-                  square
-                  class="simp"
-                  type="danger"
-                  text="删除"
-                />
+                <van-button @click="cut(index)" square class="simp"  type="primary" text="找相似" />
                 <van-button
                   @click="get(index)"
                   square
                   class="get"
                   type="primary"
-                  text="收藏"
+                  text="移入收藏"
                 />
-                <van-button square class="red" type="primary" text="收藏" />
+                <van-button
+                  @click="cut(index)"
+                  square
+                  class="red"
+                  type="danger"
+                  text="删除"
+                />
               </template>
             </van-swipe-cell>
           </div>
@@ -126,7 +126,7 @@
               <div class="new"><span>￥</span>{{ k.PRICE }}</div>
               <div class="old"><span>￥</span>{{parseInt(k.PRICE * Number(3+'.'+(index+1)))}}</div>
             </div>
-            <div class="grade">{{random()}}好评</div>
+            <div class="grade">96%好评</div>
           </section>
         </div>
       </van-list>

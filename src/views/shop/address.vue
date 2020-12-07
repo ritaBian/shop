@@ -128,6 +128,7 @@ export default {
     onSelect(item, index) {
       //console.log(item);console.log(index);
       this.chosenAddressId = item["id"];
+      this.$emit('getaddressId',this.chosenAddressId)
       this.$forceUpdate();
       this.showList = false;
     },
