@@ -88,7 +88,7 @@
       </div>
       <div class="item" v-for="(item, index) in 3" :key="index">
         <div class="tag">失效</div>
-        <img src="@/assets/shop/car/none.png" alt="" />
+        <img :src="require('@/assets/shop/car/none.png')" alt="" />
         <div class="item_none">
           <p class="dd">
             鲁昭洋青岛特产崂山淡干金钩海米甜晒虾米金钩海米甜晒虾米
@@ -150,7 +150,7 @@
       </section>
     </div>
     <!-- 底部栏 -->
-    <v-footer2></v-footer2>
+    <v-footer2 background="#f2f2f2"></v-footer2>
   </div>
 </template>
 <script>

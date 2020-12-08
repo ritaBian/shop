@@ -2,13 +2,13 @@
   <div class="shopCar">
     <div class="top">
       <img
-        src="@/assets/shop/back.png"
+        :src="require('@/assets/shop/back.png')"
         alt=""
         class="back"
         @click="$router.go(-1)"
       />
       <div class="top_input">
-        <img src="@/assets/shop/search.png" alt="" class="img" />
+        <img :src="require('@/assets/shop/search.png')" alt="" class="img" />
         <input
           type="text"
           placeholder="搜索特产、工艺品等伴手礼"
@@ -16,7 +16,7 @@
         />
       </div>
       <div class="message">
-        <img src="@/assets/shop/message.png" alt="" class="message-img" />
+        <img :src="require('@/assets/shop/message.png')" alt="" class="message-img" />
         <span>1</span>
       </div>
     </div>
@@ -56,10 +56,10 @@
           </ul>
         </div>
         <div class="banner">
-          <img src="@/assets/shop/banner.png" alt="" class="right-banner" />
+          <img :src="require('@/assets/shop/banner.png')" alt="" class="right-banner" />
         </div>
         <!-- 列表 -->
-        <div class="list" style="padding-bottom: 80px;">
+        <div class="list" style="background:#f2f2f2">
           <van-list
             v-model="loading"
             :finished="finished"
@@ -133,7 +133,7 @@
       </div>
     </div>
     <!-- 底部栏 -->
-    <v-footer2></v-footer2>
+    <v-footer2 background="#f2f2f2"></v-footer2>
   </div>
 </template>
 <script>

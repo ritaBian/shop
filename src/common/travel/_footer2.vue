@@ -1,118 +1,121 @@
 <template lang="html">
-<div class="page_body">
-  <van-tabbar v-model="active">
-    <van-tabbar-item class="tabbar-item" icon="exchange" to="/circuit">
-      <span>线路</span>
-      <template #icon="props">
-        <img :src="props.active ? require('../../../static/icon/xianlu2.png') : require('../../../static/icon/xianlu.png')" />
-      </template>
-    </van-tabbar-item>
-    <van-tabbar-item class="tabbar-item" icon="browsing-history-o" to="/index">
-      <span>发现</span>
-      <template #icon="props">
-  <img :src=" props.active ? require('../../../static/icon/faxian2.png') : require('../../../static/icon/faxian.png') " />
-</template>
-    </van-tabbar-item>
+  <div class="footerBottom">
+    <div class="page_body">
+      <van-tabbar v-model="active">
+        <van-tabbar-item class="tabbar-item" icon="exchange" to="/circuit">
+          <span>线路</span>
+          <template #icon="props">
+            <img :src="props.active ? require('../../../static/icon/xianlu2.png') : require('../../../static/icon/xianlu.png')" />
+          </template>
+        </van-tabbar-item>
+        <van-tabbar-item class="tabbar-item" icon="browsing-history-o" to="/index">
+          <span>发现</span>
+          <template #icon="props">
+            <img :src=" props.active ? require('../../../static/icon/faxian2.png') : require('../../../static/icon/faxian.png') " />
+          </template>
+        </van-tabbar-item>
 
-    <!-- <van-tabbar-item class="tabbar-item tabbar-radius1" icon="shopping-cart-o" to="/car" :badge="carCount">购物车</van-tabbar-item> -->
-    <van-tabbar-item  class="tabbar-item tabbar-radius1" icon="shopping-cart-o" to="/shop/car" :badge="carCount">购物车</van-tabbar-item>
-    <!-- <van-tabbar-item class="tabbar-item tabbar-radius1" icon="shopping-cart-o" to="/car" >
-      <span>购物车</span>
-      <template #icon="props">
-
-      </template>
-    </van-tabbar-item> -->
-  <!-- <van-tabbar-item class="tabbar-item-active" to="/category/all">
-      <div class="tabbar-active-border ">
-        <div class="item_active">
-        </div>
-        <div class="item_active2">
-        </div>
-        <div class="tabbar-active">
-          <div>商品</div>
-        </div>
-      </div>
-  </van-tabbar-item> -->
-  <van-tabbar-item class="tabbar-item-active" to="/shopCar">
-      <div class="tabbar-active-border ">
-        <div class="item_active">
-        </div>
-        <div class="item_active2">
-        </div>
-        <div class="tabbar-active">
-          <div>商品</div>
-        </div>
-      </div>
-  </van-tabbar-item>
-    <!-- <van-tabbar-item class="tabbar-item2 tabbar-radius2" icon="contact" to="/user">
-      <span>我的</span>
-      <template #icon="props">
-        <img :src="props.active ? require('../../../static/icon/wode2.png') : require('../../../static/icon/wode.png')" />
-      </template>
-    </van-tabbar-item> -->
-  <van-tabbar-item class="tabbar-item2 tabbar-radius2" icon="contact" to="/shop/mine">
-    <span>我的</span>
-    <template #icon="props">
-  <img :src=" props.active ? require('../../../static/icon/wode2.png') : require('../../../static/icon/wode.png')" />
-</template>
-  </van-tabbar-item>
-
-
-
-  </van-tabbar>
-  <!-- <van-popup v-model="$store.state.detail2.ShowSelectType" v-if="$store.state.detail2.proData.PRO" z-index="10" custom-style="height:80vh,width:100%" position="bottom">
-      请选择规格<span v-if="$store.state.detail2.proData.PRO.PRICE">,价格:{{$store.state.detail2.proData.PRO.PRICE}}</span>
-      <div class="chose-mychosed" ontouchstart="">
-        <template lang="html" v-for="(v,j) in guige">
-            <div class="changeType">
-                <div>{{v.NAME}}:</div><br/>
-                <span
-                v-for="(k,i) in v.SUB"
-                :class="{active:$isEmpty(selectType,v.ID+'',0)==k.ID}"
-                @click="changeType(v.ID,k.ID)"
-                >{{k.NAME}}</span>
+        <!-- <van-tabbar-item class="tabbar-item tabbar-radius1" icon="shopping-cart-o" to="/car" :badge="carCount">购物车</van-tabbar-item> -->
+        <!-- <van-tabbar-item  class="tabbar-item tabbar-radius1" icon="shopping-cart-o" to="/shop/car" :badge="carCount">购物车</van-tabbar-item> -->
+        <van-tabbar-item class="tabbar-item tabbar-radius1" icon="shopping-cart-o"  to="/shopCar">
+          <span>特产</span>
+          <template #icon="props">
+            <img :src=" props.active ? require('../../../static/icon/techan2.png') : require('../../../static/icon/techan.png') " />
+          </template>
+        </van-tabbar-item>
+        <!-- <van-tabbar-item class="tabbar-item-active" to="/category/all">
+            <div class="tabbar-active-border ">
+              <div class="item_active">
+              </div>
+              <div class="item_active2">
+              </div>
+              <div class="tabbar-active">
+                <div>商品</div>
+              </div>
             </div>
-
+        </van-tabbar-item> -->
+      <van-tabbar-item class="tabbar-item-active" to="/shop/car" style="background:transparent">
+        <div class="tabbar-active-border ">
+          <div class="item_active"></div>
+          <div class="item_active2"></div>
+          <!-- <div class="tabbar-active">
+            <div>购物车</div>
+          </div> -->
+          <div class="tabbar-active">
+            <img :src="require('../../../static/icon/carCircle.png')" style="width: 67px;	height: 67px;"/>
+            <div class="text">购物车</div>
+            <div class="circle" v-if="carCount > 0"></div>
+          </div>
+        </div>
+      </van-tabbar-item>
+      <!-- <van-tabbar-item class="tabbar-item2 tabbar-radius2" icon="contact" to="/user">
+        <span>我的</span>
+        <template #icon="props">
+          <img :src="props.active ? require('../../../static/icon/wode2.png') : require('../../../static/icon/wode.png')" />
         </template>
-        <div style="width:100%">
-          <div class="footer-addcar" style="color:#fff" @click="AddToCard" >加入购物车</div>
-        </div>
-    </div>
-  </van-popup> -->
-  <div class="shopDetais">
-    <van-popup v-model="$store.state.detail2.ShowSelectType" v-if="$store.state.detail2.proData.PRO" z-index="10" custom-style="height:80vh,width:100%" position="bottom">
-      <!-- <van-action-sheet v-model="show" title="商品选择" :round="false"> -->
-        <div class="buy_content" v-for="(v,j) in guige">
-          <div class="pro">
-            <img src="@/assets/shop/details/img1.png" alt="">
-            <div class="desc">
-              <div class="title">{{$store.state.detail2.proData.PRO.NAME}}</div>
-              <div class="price">￥{{$store.state.detail2.proData.PRO.PRICE}}</div>
+      </van-tabbar-item> -->
+      <van-tabbar-item class="tabbar-item2 tabbar-radius2" icon="contact" to="/shop/mine">
+        <span>我的</span>
+        <template #icon="props">
+          <img :src="props.active ? require('../../../static/icon/wode2.png') : require('../../../static/icon/wode.png')" />
+        </template>
+      </van-tabbar-item>
+    </van-tabbar>
+      <!-- <van-popup v-model="$store.state.detail2.ShowSelectType" v-if="$store.state.detail2.proData.PRO" z-index="10" custom-style="height:80vh,width:100%" position="bottom">
+          请选择规格<span v-if="$store.state.detail2.proData.PRO.PRICE">,价格:{{$store.state.detail2.proData.PRO.PRICE}}</span>
+          <div class="chose-mychosed" ontouchstart="">
+            <template lang="html" v-for="(v,j) in guige">
+                <div class="changeType">
+                    <div>{{v.NAME}}:</div><br/>
+                    <span
+                    v-for="(k,i) in v.SUB"
+                    :class="{active:$isEmpty(selectType,v.ID+'',0)==k.ID}"
+                    @click="changeType(v.ID,k.ID)"
+                    >{{k.NAME}}</span>
+                </div>
+
+            </template>
+            <div style="width:100%">
+              <div class="footer-addcar" style="color:#fff" @click="AddToCard" >加入购物车</div>
             </div>
-          </div>
-          <div class="style">
-            <div class="title">选择{{v.NAME}}</div>
-            <ul>
-              <li v-for="(k,i) in v.SUB" 
-                :class="{'choice':$isEmpty(selectType,v.ID+'',0)==k.ID}" 
-                @click="changeType(v,v.ID,k.ID)"
-                >{{k.NAME}}</li>
-              <!-- <li class="choice">6+饽花2斤全麦(4两)</li>
-              <li class="other">6全麦(4两)6+年糕3块</li> -->
-            </ul>
-          </div>
-          <div class="num">
-            <div class="title">选择数量</div>
-            <van-stepper v-model="value" />
-          </div>
-          <div class="footers">
-            <p @click="AddToCard">加入购物车</p>
-            <p @click="goBuy">立即购买</p>
-          </div>
         </div>
-      <!-- </van-action-sheet> -->
-    </van-popup>
-  </div>
+      </van-popup> -->
+      <div class="shopDetais">
+        <van-popup v-model="$store.state.detail2.ShowSelectType" v-if="$store.state.detail2.proData.PRO" z-index="10" custom-style="height:80vh,width:100%" position="bottom">
+          <!-- <van-action-sheet v-model="show" title="商品选择" :round="false"> -->
+            <div class="buy_content" v-for="(v,j) in guige">
+              <div class="pro">
+                <img src="@/assets/shop/details/img1.png" alt="">
+                <div class="desc">
+                  <div class="title">{{$store.state.detail2.proData.PRO.NAME}}</div>
+                  <div class="price">￥{{$store.state.detail2.proData.PRO.PRICE}}</div>
+                </div>
+              </div>
+              <div class="style">
+                <div class="title">选择{{v.NAME}}</div>
+                <ul>
+                  <li v-for="(k,i) in v.SUB" 
+                    :class="{'choice':$isEmpty(selectType,v.ID+'',0)==k.ID}" 
+                    @click="changeType(v,v.ID,k.ID)"
+                    >{{k.NAME}}</li>
+                  <!-- <li class="choice">6+饽花2斤全麦(4两)</li>
+                  <li class="other">6全麦(4两)6+年糕3块</li> -->
+                </ul>
+              </div>
+              <div class="num">
+                <div class="title">选择数量</div>
+                <van-stepper v-model="value" />
+              </div>
+              <div class="footers">
+                <p @click="AddToCard">加入购物车</p>
+                <p @click="goBuy">立即购买</p>
+              </div>
+            </div>
+          <!-- </van-action-sheet> -->
+        </van-popup>
+      </div>
+    </div>
+    <div class="footerfooter" :style="{'background':background}"></div> 
   </div>
 </template>
 
@@ -142,6 +145,10 @@ export default {
       type: null, //属性类型
       value: "",
     },
+    background:{
+      type: String,
+      value:'transparent'
+    }
   },
   data() {
     return {
@@ -203,10 +210,10 @@ export default {
           case "/index":
             this.active = 1;
             break;
-          case "/shop/car":
+          case "/shopCar":
             this.active = 2;
             break;
-          case "/shopCar":
+          case "/shop/car":
             this.active = 3;
             break;
           case "/shop/mine":
@@ -387,6 +394,9 @@ export default {
 
 <style lang="less" scoped="scoped">
 @import "../../assets/fz.less";
+.footerfooter{
+  height: 55px;
+}
 body {
   color: #fff;
 }
@@ -464,7 +474,7 @@ body {
   width: 3.44rem;
   height: 3.44rem;
   border-radius: 50%;
-  background-color: #01a862;
+  // background-color: #01a862;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -477,6 +487,23 @@ body {
   left: 50%;
   margin-left: -1.7rem;
   z-index: 9999999;
+  .text{
+    position: absolute;
+    bottom: 7px;
+  }
+  .circle{
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: #fba819;
+    border-radius: 50%;
+    right: 12px;
+    top:6px;
+  }
+  img{
+    width: 67px;
+    height:67px
+  }
   // border: 0.2rem solid #FFFFFF;
 }
 .van-tabbar-item--active {

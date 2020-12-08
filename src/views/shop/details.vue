@@ -13,14 +13,14 @@
       <div class="swipeChange">{{ index * 1 + 1 }}/{{ swiper.length }}</div>
       <div class="icon">
         <img
-          src="@/assets/shop/details/1.png"
+          :src="require('@/assets/shop/details/1.png')"
           alt=""
           class="left"
           @click="$router.go(-1)"
         />
         <div class="right">
-          <img src="@/assets/shop/details/2.png" alt="" />
-          <img src="@/assets/shop/details/3.png" alt="" />
+          <img :src="require('@/assets/shop/details/2.png')" alt="" />
+          <img :src="require('@/assets/shop/details/3.png')" alt="" />
         </div>
       </div>
     </div>
@@ -39,8 +39,8 @@
             <p>特价</p>
           </div>
           <div class="allow">
-            <img src="@/assets/shop/details/no_allow.png" alt="" />
-            <!-- <img src="@/assets/shop/details/allowed.png" alt=""> -->
+            <img :src="require('@/assets/shop/details/no_allow.png')" alt="" />
+            <!-- <img :src="require('@/assets/shop/details/allowed.png')" alt=""> -->
             <span>收藏</span>
           </div>
         </div>
@@ -73,7 +73,7 @@
             >
               <!-- 展开更多 -->
               <img
-                src="@/assets/shop/details/arrow.png"
+                :src="require('@/assets/shop/details/arrow.png')"
                 class="openmore"
                 alt=""
               />
@@ -86,7 +86,7 @@
             >
               <div>收起全文</div>
               <img
-                src="@/assets/shop/details/arrow.png"
+                :src="require('@/assets/shop/details/arrow.png')"
                 class="content_detail_white_img"
                 alt=""
               />
@@ -101,38 +101,38 @@
             <span>优惠</span>
             <div class="discount1">优惠券</div>
             <div class="discount2">
-              <img src="@/assets/shop/details/discount_bg.png" alt="" />
+              <img :src="require('@/assets/shop/details/discount_bg.png')" alt="" />
               <!-- 购买此产品可获得 {{view.POINT}} 积分 -->
               <span>满98减10</span>
             </div>
           </div>
-          <img src="@/assets/shop/details/arrow.png" class="more" alt="" />
+          <img :src="require('@/assets/shop/details/arrow.png')" class="more" alt="" />
         </section>
         <section>
           <div class="item">
             <span>发货</span>
             <div class="text">青岛直邮 -<span> 预计7-15工作日送达</span></div>
           </div>
-          <img src="@/assets/shop/details/arrow.png" class="more" alt="" />
+          <img :src="require('@/assets/shop/details/arrow.png')" class="more" alt="" />
         </section>
         <section @click="showList = true">
           <div class="item">
             <span>送至</span>
             <img
-              src="@/assets/shop/details/location.png"
+              :src="require('@/assets/shop/details/location.png')"
               class="location"
               alt=""
             />
             <div class="text">{{currentContact?currentContact.address : '请选择地址'}}</div>
           </div>
-          <img src="@/assets/shop/details/arrow.png" class="more" alt="" />
+          <img :src="require('@/assets/shop/details/arrow.png')" class="more" alt="" />
         </section>
         <section>
           <div class="item">
             <span>运费</span>
             <div class="text">{{ yunfei[0]["NAME"] }}</div>
           </div>
-          <img src="@/assets/shop/details/arrow.png" class="more" alt="" />
+          <img :src="require('@/assets/shop/details/arrow.png')" class="more" alt="" />
         </section>
       </div>
       <!-- 3 -->
@@ -141,12 +141,12 @@
           <div class="name">商品评价(28)</div>
           <div class="moreall">
             <span>查看全部</span>
-            <img src="@/assets/shop/details/arrow.png" class="more" alt="" />
+            <img :src="require('@/assets/shop/details/arrow.png')" class="more" alt="" />
           </div>
         </div>
         <div class="evl" v-for="(item, index) in 2" :key="index">
           <div class="head">
-            <img src="@/assets/shop/details/head.png" alt="" />
+            <img :src="require('@/assets/shop/details/head.png')" alt="" />
             <div class="name">简***泽</div>
           </div>
           <div class="contents">
@@ -212,18 +212,18 @@
     <div class="footer">
       <div class="left">
         <div class="tab">
-          <img src="@/assets/shop/details/service.png" alt="" />
+          <img :src="require('@/assets/shop/details/service.png')" alt="" />
           <span>客服</span>
         </div>
         <van-badge :content="5" class="badge">
           <div class="tab">
-            <img src="@/assets/shop/details/allow.png" alt="" />
+            <img :src="require('@/assets/shop/details/allow.png')" alt="" />
             <span>收藏</span>
           </div>
         </van-badge>
         <van-badge :content="count" class="badge">
           <div class="tab" @click="$router.push('/shop/car')">
-            <img src="@/assets/shop/details/bag.png" alt="" />
+            <img :src="require('@/assets/shop/details/bag.png')" alt="" />
             <span>购物车</span>
           </div>
         </van-badge>
@@ -245,7 +245,7 @@
       >
         <div class="buy_content" v-for="(v, j) in guige" :key="j">
           <div class="pro">
-            <img src="@/assets/shop/details/img1.png" alt="" />
+            <img :src="require('@/assets/shop/details/img1.png')" alt="" />
             <div class="desc">
               <div class="title">
                 {{ $store.state.detail2.proData.PRO.NAME }}
@@ -279,7 +279,7 @@
         </div>
       </van-popup>
     </div>
-    <addressed :show="showList" @getMessage="changeShow"></addressed>
+    <addressed :show="showList" @getMessage="changeShow" @getaddressId="getaddressId"></addressed>
   </div>
 </template>
 <script>
@@ -312,10 +312,12 @@ export default {
       height_content: "",
       ShowSelectType: false,
       list: [],
+      listAddress:[],//地址
       loading: false,
       finished: false,
       pageNum: 0,
-      showList:false
+      showList:false,
+      chosenAddressId:'',
     };
   },
   mounted() {
@@ -368,7 +370,7 @@ export default {
     },
     currentContact() {
       const id = this.chosenAddressId;
-      return id !== null ? this.list.filter((item) => item.id === id)[0] : {};
+      return id !== null ? this.listAddress.filter((item) => item.id === id)[0] : {};
     },
   }),
   methods: {
@@ -384,6 +386,9 @@ export default {
     },
     random() {
       return parseInt(Math.random() * (100 - 90 + 1) + 90, 10) + "%";
+    },
+    getaddressId(id) {
+      this.chosenAddressId = id;
     },
     // 监听滚动
     handleScroll() {
@@ -465,7 +470,7 @@ export default {
           ) {
             for (let k = 0; k < response.data.data.length; k++) {
               let t = response.data.data[k];
-              this.list.push({
+              this.listAddress.push({
                 id: t["ID"],
                 name: t["USER_NAME"],
                 isDefault: t["ISDEFAULT"],

@@ -2,8 +2,8 @@
   <div class="mine">
     <article>
       <div class="set">
-        <img src="@/assets/shop/mine/set.png" alt="" @click="logout"  />
-        <img src="@/assets/shop/mine/message.png" alt="" />
+        <img :src="require('@/assets/shop/mine/set.png')" alt="" @click="logout"  />
+        <img :src="require('@/assets/shop/mine/message.png')" alt="" />
       </div>
       <div class="head">
         <img :src="decodeURI($store.state.detail.user.pic)" alt="" />
@@ -37,13 +37,13 @@
           <div class="title">我的订单</div>
           <div class="all" @click="$router.push({path:'/order'})">
             <span>全部订单 </span>
-            <img src="@/assets/shop/mine/arrow.png" alt="" />
+            <img :src="require('@/assets/shop/mine/arrow.png')" alt="" />
           </div>
         </div>
         <ul>
           <li @click="$router.push({path:'/order'})">
             <img
-              src="@/assets/shop/mine/1.png"
+              :src="require('@/assets/shop/mine/1.png')"
               style="width: 22px; height: 22px"
               alt=""
             />
@@ -51,7 +51,7 @@
           </li>
           <li @click="$router.push({path:'/order'})">
             <img
-              src="@/assets/shop/mine/2.png"
+              :src="require('@/assets/shop/mine/2.png')"
               style="width: 24px; height: 20px"
               alt=""
             />
@@ -59,7 +59,7 @@
           </li>
           <li>
             <img
-              src="@/assets/shop/mine/3.png"
+              :src="require('@/assets/shop/mine/3.png')"
               style="width: 22px; height: 21px"
               alt=""
             />
@@ -67,7 +67,7 @@
           </li>
           <li>
             <img
-              src="@/assets/shop/mine/4.png"
+              :src="require('@/assets/shop/mine/4.png')"
               style="width: 20px; height: 22px"
               alt=""
             />
@@ -88,7 +88,7 @@
         :autoplay="3000"
       >
         <van-swipe-item class="swipe_item">
-          <img src="@/assets/shop/mine/little.png" alt="" class="bg" />
+          <img :src="require('@/assets/shop/mine/little.png')" alt="" class="bg" />
           <section>
             <div class="driver">
               <p>
@@ -101,7 +101,7 @@
           </section>
         </van-swipe-item>
         <van-swipe-item class="swipe_item">
-          <img src="@/assets/shop/mine/little.png" alt="" class="bg" />
+          <img :src="require('@/assets/shop/mine/little.png')" alt="" class="bg" />
           <section>
             <div class="driver">
               <p>
@@ -114,7 +114,7 @@
           </section>
         </van-swipe-item>
         <van-swipe-item class="swipe_item">
-          <img src="@/assets/shop/mine/little.png" alt="" class="bg" />
+          <img :src="require('@/assets/shop/mine/little.png')" alt="" class="bg" />
           <section>
             <div class="driver">
               <p>
@@ -129,12 +129,56 @@
       </van-swipe>
     </div>
 
+    <div class="service2">
+      <div class="title">我的账户</div>
+      <ul>
+        <li @click="showList = true">
+          <img
+            :src="require('@/assets/shop/mine/account1.png')"
+            style="width: 25px; height: 25px"
+            alt=""
+          />
+          <div>账号余额： <span>{{'￥'+$store.state.detail.user.rmb}}</span></div>
+        </li>
+        <li>
+          <img
+            :src="require('@/assets/shop/mine/account2.png')"
+            style="width: 25px; height: 25px"
+            alt=""
+          />
+          <div>剩余积分： <span>{{$store.state.detail.user.point+' 个'}}</span></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="service1">
+      <div class="title">发布管理</div>
+      <ul>
+        <li @click="$router.push('/release_journey_list')">
+          <img
+            :src="require('@/assets/shop/mine/sub1.png')"
+            style="width: 26px; height: 19px"
+            alt=""
+          />
+          <div>线路</div>
+        </li>
+        <li>
+          <img
+            :src="require('@/assets/shop/mine/sub2.png')"
+            style="width: 25px; height: 25px"
+            alt=""
+          />
+          <div>评论</div>
+        </li>
+      </ul>
+    </div>
+
     <div class="service">
       <div class="title">更多服务</div>
       <ul>
         <li @click="showList = true">
           <img
-            src="@/assets/shop/mine/service1.png"
+            :src="require('@/assets/shop/mine/service1.png')"
             style="width: 19px; height: 23px"
             alt=""
           />
@@ -142,7 +186,7 @@
         </li>
         <li>
           <img
-            src="@/assets/shop/mine/service2.png"
+            :src="require('@/assets/shop/mine/service2.png')"
             style="width: 23px; height: 19px"
             alt=""
           />
@@ -150,7 +194,7 @@
         </li>
         <li>
           <img
-            src="@/assets/shop/mine/service3.png"
+            :src="require('@/assets/shop/mine/service3.png')"
             style="width: 20px; height: 23px"
             alt=""
           />
@@ -158,7 +202,7 @@
         </li>
         <li>
           <img
-            src="@/assets/shop/mine/service4.png"
+            :src="require('@/assets/shop/mine/service4.png')"
             style="width: 23px; height: 23px"
             alt=""
           />
@@ -166,7 +210,7 @@
         </li>
         <li>
           <img
-            src="@/assets/shop/mine/service5.png"
+            :src="require('@/assets/shop/mine/service5.png')"
             style="width: 23px; height: 23px"
             alt=""
           />
@@ -174,6 +218,8 @@
         </li>
       </ul>
     </div>
+    
+
     <addressed :show="showList" @getMessage="changeShow"></addressed>
     <!-- 底部栏 -->
     <v-footer2></v-footer2>

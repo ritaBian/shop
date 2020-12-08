@@ -1,5 +1,5 @@
 <template>
-  <div class="buy_details">
+  <div class="buy_details pay">
     <div class="">
       <van-nav-bar title="确认订单" left-arrow @click-left="$router.go(-1)" />
       <!-- <img src="@/assets/shop/buy/arrow.png" alt="" @click="$router.go(-1)" />
@@ -16,7 +16,7 @@
         </div>
         <div class="house">{{ currentContact.address }}</div>
       </section>
-      <img src="@/assets/shop/buy/change.png" alt="" />
+      <img :src="require('@/assets/shop/buy/change.png')" alt="" />
     </div>
     <div class="list" v-if="!confirm">
       <div class="item" v-for="(k, index) in carList" :key="index">
@@ -41,7 +41,7 @@
       <div class="sales">优惠券</div>
       <div>
         <span>无可用</span>
-        <img src="@/assets/shop/buy/change.png" alt="" />
+        <img :src="require('@/assets/shop/buy/change.png')" alt="" />
       </div>
     </div>
 
@@ -76,7 +76,11 @@
       <div class="btn" @click="payConfirm">提交订单</div>
     </div>
 
-    <addressed :show="showList" @getMessage="changeShow" @getaddressId="getaddressId"></addressed>
+    <addressed
+      :show="showList"
+      @getMessage="changeShow"
+      @getaddressId="getaddressId"
+    ></addressed>
     <!-- <van-contact-card
       :type="cardType"
       :name="currentContact.name || ''"
@@ -120,20 +124,19 @@
         </footer>
       </van-cell-group>
     </van-popup>
-
-    
   </div>
 </template>
 <script>
 import "@/css/shop/buy.scss";
+import 'vant/lib/index.css';
 import { areaList } from "@/util/area.js";
 import { Toast } from "vant";
 import { MessageBox } from "mint-ui";
 import Util from "../../util/common";
-import addressed from "./address.vue"
+import addressed from "./address.vue";
 export default {
-  components:{
-    addressed
+  components: {
+    addressed,
   },
   data() {
     return {
@@ -323,11 +326,11 @@ export default {
     },
   },
   methods: {
-    changeShow(val){
-      this.showList = val
+    changeShow(val) {
+      this.showList = val;
     },
-    getaddressId(id){
-      this.chosenAddressId = id
+    getaddressId(id) {
+      this.chosenAddressId = id;
     },
     proYunFei(fei, chosenAddressId, count) {
       count = parseInt(count);
@@ -543,3 +546,107 @@ export default {
   },
 };
 </script>
+<style lang="less">
+@import "../../assets/fz.less";
+.van-radio__input,
+.van-radio__label {
+  display: inline-block;
+  vertical-align: middle;
+}
+.baidumap {
+  width: 100%;
+  height: 300px;
+}
+.pay {
+  width: 100%;
+  background-color: #f7f7f7;
+
+  .pay-product {
+    background-color: #fff;
+    height: 60vw;
+    overflow: auto;
+
+    li {
+      a {
+        display: -webkit-flex;
+        display: -ms-flex;
+        display: flex;
+        box-sizing: border-box;
+        padding: 20 * 10vw/75 30 * 10vw/75;
+        color: #4d4d4d;
+        .fz(font-size,30px);
+        border-bottom: 1 * 10vw/75 solid #dedede;
+
+        > img {
+          display: block;
+          width: 2.5 * 10vw;
+          height: 2.5 * 10vw;
+        }
+
+        > div {
+          box-sizing: border-box;
+          padding-left: 50 * 10vw/75;
+          width: 70%;
+          h2 {
+            padding-top: 0.09 * 10vw;
+            overflow: hidden;
+            word-break: keep-all;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+
+          p {
+            //text-align: right;
+            .fz(font-size,24px);
+            //padding-top: 1.4*10vw;
+          }
+        }
+      }
+    }
+  }
+
+  .pay-allpay {
+    text-align: right;
+    margin-top: 6vw;
+    padding: 4vw 5vw;
+    .fz(font-size,32px);
+    color: #999999;
+    background-color: #fff;
+    i,
+    span {
+      color: @cl;
+    }
+  }
+
+  .pay-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding-bottom: 4vw;
+    span {
+      display: block;
+      width: 85%;
+      background-color: #f44;
+      border-radius: 1.3vw;
+      color: #fff;
+      font-size: 17px;
+      padding: 4vw;
+      margin: 0 auto;
+      text-align: center;
+      &:active {
+        background-color: @cl;
+      }
+    }
+  }
+
+  .pay-confirm {
+    padding: 20px 0;
+    background-color: @cl;
+    text-align: center;
+    color: #fff;
+    line-height: 30px;
+    .fz(font-size,40);
+  }
+}
+</style>
