@@ -265,6 +265,7 @@ export default {
     },
     // 左滑删除
     cut(i) {
+      this.$refs["swipeCell" + i][0].open();
       this.$dialog
         .alert({
           title: "提示",
@@ -274,7 +275,7 @@ export default {
           cancelButtonText: "取消",
         })
         .then(() => {
-          this.$refs["swipeCell" + i][0].open();
+          this.$refs["swipeCell" + i][0].close();
           // 点击垃圾桶，删除当前商品，这里用splice和filter都会bug,只能重置数组
           let newCarList = [];
           for (let k = 0; k < this.carList.length; k++) {

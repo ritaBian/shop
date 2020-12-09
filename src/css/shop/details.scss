@@ -111,7 +111,7 @@
       }
       .bottom{
         margin-top: 17px;
-        /deep/.van-cell{
+        .van-cell{
           padding: 0;
           &::after{
             position: relative;
@@ -127,7 +127,7 @@
             -webkit-line-clamp:1;
           }
         }
-        /deep/.van-collapse-item__content{
+        .van-collapse-item__content{
           padding: 0;
         }
       }
@@ -275,7 +275,7 @@
     flex-wrap: wrap;
     margin: 0 10px;
     padding-bottom: 60px;
-    /deep/.van-list{
+    .van-list{
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
@@ -287,13 +287,14 @@
     .item{
       border-radius:6px ;
       background-color: #fff;
-      width: 173px;
-      // width: 50%;
+      // width: 173px;
+      width: 48%;
       padding-bottom: 15px;
       margin-bottom: 10px;
       .img{
         img{
           width: 173px;
+          width: 100%;
           height: 173px;
         }
         span{
@@ -373,7 +374,7 @@
       flex: 1;
       .badge{
         width: 33%;
-        /deep/.van-badge--fixed{
+        .van-badge--fixed{
           right: 14px;
           // top: 5px;
         }
