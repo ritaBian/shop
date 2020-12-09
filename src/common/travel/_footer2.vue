@@ -42,7 +42,7 @@
             <div>购物车</div>
           </div> -->
           <div class="tabbar-active">
-            <img :src="require('../../../static/icon/carCircle.png')" style="width: 67px;	height: 67px;"/>
+            <img :src="require('../../../static/icon/shopbag.png')" style="width: 19px;	height: 21px;"/>
             <div class="text">购物车</div>
             <div class="circle" v-if="carCount > 0"></div>
           </div>
@@ -477,7 +477,7 @@ body {
   width: 3.44rem;
   height: 3.44rem;
   border-radius: 50%;
-  // background-color: #01a862;
+  background-color: #01a862;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -504,6 +504,8 @@ body {
     top:6px;
   }
   img{
+    position: absolute;
+    top: 10px;
     width: 67px;
     height:67px
   }
