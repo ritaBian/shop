@@ -245,7 +245,7 @@
       >
         <div class="buy_content" v-for="(v, j) in guige" :key="j">
           <div class="pro">
-            <img :src="require('@/assets/shop/details/img1.png')" alt="" />
+            <img :src="checkPic($store.state.detail2.proData.PRO.PIC)" alt="" />
             <div class="desc">
               <div class="title">
                 {{ $store.state.detail2.proData.PRO.NAME }}

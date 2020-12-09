@@ -85,7 +85,7 @@
           <!-- <van-action-sheet v-model="show" title="商品选择" :round="false"> -->
             <div class="buy_content" v-for="(v,j) in guige">
               <div class="pro">
-                <img src="@/assets/shop/details/img1.png" alt="">
+                <img :src="checkPic($store.state.detail2.proData.PRO.PIC)" alt="">
                 <div class="desc">
                   <div class="title">{{$store.state.detail2.proData.PRO.NAME}}</div>
                   <div class="price">￥{{$store.state.detail2.proData.PRO.PRICE}}</div>
@@ -231,6 +231,9 @@ export default {
       this.$router.push({
         name: this.selected,
       });
+    },
+    checkPic: function (picurl) {
+      return this.$conf.domain + "/" + picurl;
     },
     changeType(v, typeID, ID) {
       this.$store.commit("CHANGE_COL_SELECTED2", [typeID, ID]);

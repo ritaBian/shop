@@ -56,7 +56,7 @@
           </ul>
         </div>
         <div class="banner">
-          <img :src="require('../../assets/shop/banner.png')" alt="" class="right-banner" />
+          <img :src="require('../../../static/shop_new/banner.png')" alt="" class="right-banner" />
         </div>
         <!-- 列表 -->
         <div class="list" style="background:#f2f2f2">

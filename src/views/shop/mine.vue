@@ -88,7 +88,7 @@
         :autoplay="3000"
       >
         <van-swipe-item class="swipe_item">
-          <img :src="require('../../assets/shop/mine/little.png')" alt="" class="bg" />
+          <img :src="require('../../../static/shop_new/little.png')" alt="" class="bg" />
           <section>
             <div class="driver">
               <p>
@@ -101,7 +101,7 @@
           </section>
         </van-swipe-item>
         <van-swipe-item class="swipe_item">
-          <img :src="require('../../assets/shop/mine/little.png')" alt="" class="bg" />
+          <img :src="require('../../../static/shop_new/little.png')" alt="" class="bg" />
           <section>
             <div class="driver">
               <p>
@@ -114,7 +114,7 @@
           </section>
         </van-swipe-item>
         <van-swipe-item class="swipe_item">
-          <img :src="require('../../assets/shop/mine/little.png')" alt="" class="bg" />
+          <img :src="require('../../../static/shop_new/little.png')" alt="" class="bg" />
           <section>
             <div class="driver">
               <p>
